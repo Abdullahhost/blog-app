@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&display=swap");
+
+*,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.bgImage {
+  height: 100vh;
+  width: 50%;
+  background: url("/login_signup_image.675111a44777b399a699.jpg");
+  /* background: url("https://app.bookitu.com/static/media/login_signup_image.675111a44777b399a699.jpg"); */
+}
+
+.setTextStyle {
+  font-family: "DM Sans", sans-serif;
+}

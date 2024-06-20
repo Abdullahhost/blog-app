@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/dashboard.html -->
+<html style="--bottom-side-width: 185px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>New Tab</title>
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/css/style.min.css">
+<style type="text/css" data-vue-ssr-id="5d09632d:0">
+/* stylelint-disable */
+.three-col-layout[data-v-0b972818] { display: grid; align-items: center; grid-template-columns: minmax(var(--15a6c1ae), 1fr) minmax(0, auto) minmax(var(--15a6c1ae), 1fr);
+}
+.three-col-layout.grow-center[data-v-0b972818] { grid-template-columns: var(--15a6c1ae) minmax(auto, var(--6863c08e)) var(--15a6c1ae);
+}
+.three-col-layout--left[data-v-0b972818] { justify-self: end;
+}
+	/* Width 100% largely so quote can fill the width and widening the window will trigger a resize when the text has wrapped */
+.three-col-layout.grow-center .three-col-layout--center[data-v-0b972818] { width: 100%;
+}
+.three-col-layout--right[data-v-0b972818] { justify-self: start;
+}
+.three-col-layout.align-sides-outside[data-v-0b972818] .three-col-layout--left { justify-self: start;
+}
+.three-col-layout.align-sides-outside[data-v-0b972818] .three-col-layout--right { justify-self: end;
+}
+
+</style><style type="text/css" data-vue-ssr-id="32b6a9b3:0">
+/* stylelint-disable */
+.dashboard[data-v-3b81d88a] { position: absolute; inset: 0; z-index: 3; display: grid; grid-template-columns: var(--f9b3960e) minmax(auto, 1fr) var(--f9b3960e); grid-template-rows: var(--362319b4) minmax(0, var(--02c8a359)) auto minmax(auto, 1fr) auto; overflow: hidden; transition: opacity 0.3s var(--a-curve);
+}
+.full[data-v-3b81d88a] { position: absolute; inset: 0;
+}
+
+/*
+top-left and top-right should compete equally for space but will take up more if they have proportionally more content
+However, top-left has minmax(auto, max-content) so that it will never grow to more than its content. This allows base metric
+To use as much room as possible once links has grown to the fullest extent.
+ */
+.top-row[data-v-3b81d88a] { grid-column: 1 / -1; grid-row: 1 / span 1; display: grid; grid-template-columns: minmax(auto, max-content) auto; grid-template-rows: auto auto;
+}
+	/* Max width fixes blowout when bookmarks overflows. min-width: 0 causes top-left and top-right to lock to 50% width each which is not ideal */
+.top-bar[data-v-3b81d88a] { max-width: var(--dash-width); grid-column: 1 / -1; grid-row: 1 / span 1; display: flex; flex-direction: column;
+}
+.top-left[data-v-3b81d88a] { height: fit-content; grid-column: 1 / span 1; grid-row: 2 / span 1; display: flex; align-items: flex-start; min-width: 0;
+} /* fit-content is used to ensure the top-left doesn't grow to the height of the top-right */
+.top-right[data-v-3b81d88a] { grid-column: 2 / span 1; grid-row: 2 / span 1; min-width: 0; display: flex; flex-direction: row-reverse;
+}
+.top-right[data-v-3b81d88a] .metric-item { padding: var(--dash-vertical-margin) var(--dash-metric-side-padding) 10px;
+}
+.sidebar-left[data-v-3b81d88a] { grid-column: 1 / span 1; grid-row: 2 / span 3;
+}
+.sidebar-right[data-v-3b81d88a] { grid-column: -2 / span 1; grid-row: 2 / span 3;
+}
+.sidebar-left[data-v-3b81d88a], .sidebar-right[data-v-3b81d88a] { display: flex; flex-direction: column; width: max-content;
+}
+.center-above[data-v-3b81d88a] { grid-column: 2 / span 1; grid-row: 2 / span 1;
+}
+[data-v-3b81d88a] .center, .center-measure[data-v-3b81d88a] { grid-column: 2 / span 1; grid-row: 3 / span 1;
+}
+[data-v-3b81d88a] .center-below { align-self: center; grid-column: 2 / span 1; grid-row: 4 / span 1; text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.bottom-row[data-v-3b81d88a] { grid-column: 1 / -1; grid-row: 5 / span 1; align-items: end;
+}
+.bottom-left[data-v-3b81d88a], .bottom-center[data-v-3b81d88a], .bottom-right[data-v-3b81d88a] { display: flex; align-items: flex-end;
+}
+.bottom-center[data-v-3b81d88a] { flex-grow: 1;
+}
+.dash-overlay[data-v-3b81d88a] { position: absolute; inset: 0; z-index: 3; background-color: rgba(0,0,0, var(--opacity-stop-4));
+}
+@media screen and (max-width: 768px) {
+	/* Modify the three-col-layout grid to move the quote above the left and right columns */
+.bottom-row[data-v-3b81d88a] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; grid-template-rows: auto auto !important;
+}
+.bottom-row[data-v-3b81d88a] .three-col-layout--left { width: 100%; grid-column: 1 / span 1; grid-row: 2 / span 1;
+}
+.bottom-row[data-v-3b81d88a] .three-col-layout--center { grid-column: 1 / -1; grid-row: 1 / span 1;
+}
+.bottom-row[data-v-3b81d88a] .three-col-layout--right { grid-column: 2 / span 1; grid-row: 2 / span 1;
+}
+}
+@media screen and (max-width: 450px) {
+.dashboard[data-v-3b81d88a] { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+	/* The pomodoro needs to be centered, but the clock should be at the top */
+.dashboard[data-v-3b81d88a] > .center { grid-row: 2 / span 2; display: flex; justify-content: center;
+}
+.dashboard[data-v-3b81d88a] > .center .pomodoro { align-self: flex-end;
+}
+}
+
+/* .app-dash layout overrides */
+.top-right[data-v-3b81d88a] > :first-child .app-dash, .bottom-right[data-v-3b81d88a] > :last-child .app-dash { padding-right: var(--dash-side-margin);
+}
+.top-right > .base-metric[data-v-3b81d88a]:first-child { padding-right: calc(var(--dash-side-margin) - var(--dash-metric-side-padding));
+}
+.top-right[data-v-3b81d88a]:not(.app-hover):hover .needs-hover .app-dash { opacity: 1;
+}
+.bottom-left[data-v-3b81d88a] > :first-child .app-dash { padding-left: var(--dash-side-margin);
+}
+
+/* Use negative margin so that app container matches the size of the app dash content for relative positioning of the popup while keeping the padding on the app-dash element for large clickable area. */
+/* TODO: set up for other regions as needed */
+.top-left[data-v-3b81d88a] { padding-left: calc(var(--dash-side-margin) - var(--app-dash-padding));
+}
+.top-left[data-v-3b81d88a] .app-container:first-child { margin: 0 var(--side-padding) 0 var(--dash-side-margin);
+}
+.top-left[data-v-3b81d88a] .app-container:first-child >>> .app-dash { margin: 0 calc(var(--side-padding) * -1) 0 calc(var(--dash-side-margin) * -1); padding-left: var(--dash-side-margin);
+}
+[data-v-3b81d88a] .needs-hover:not(.active) .app-dash { opacity: 0; transition: opacity 0.1s var(--a-curve);
+}
+</style><style type="text/css" id="font-override"></style><style type="text/css" data-vue-ssr-id="d5212ca6:0">
+/* stylelint-disable */
+.flash-message-container[data-v-a16b3076] { position: absolute; inset: 1.5em 0 auto; z-index: 10; display: flex; justify-content: center; pointer-events: none;
+}
+.flash-message[data-v-a16b3076] { max-width: 650px; padding: 7px 24px;  background-color: var(--color-bg); border-radius: 100px; color: var(--color-text); pointer-events: all; text-shadow: none; box-shadow: 0 10px 20px rgba(0 0 0 / var(--opacity-stop-2));
+}
+.flash-message-content[data-v-a16b3076] { display: flex; gap: 16px; align-items: center; justify-content: center;
+}
+.flash-message-description[data-v-a16b3076] { text-align: center; margin-top: 5px; color: var(--color-stop-5); font-size: 0.875rem; padding: 0 20px; line-height: normal;
+}
+.icon[data-v-a16b3076] { --icon-size: 16px; flex-shrink: 0; margin: 5px 0;
+}
+.v-message[data-v-a16b3076] { padding: 3px 0;
+}
+.v-message a[data-v-a16b3076] { color: var(--color-text); text-decoration: underline; transition: opacity 0.05s ease;
+}
+.v-message a[data-v-a16b3076]:hover { opacity: 0.8;
+}
+.v-message a[data-v-a16b3076]:hover:active { opacity: 1; transition-duration: 0s;
+}
+.button[data-v-a16b3076] { white-space: nowrap; margin: -5px -9px -5px 0;
+}
+.close[data-v-a16b3076] { margin-right: -4px; margin-left: 3px;
+}
+.close[data-v-a16b3076]:after { --icon-wrapper-size: 30px;
+}
+.icon-close[data-v-a16b3076] { --icon-size: 10px;
+}
+</style><style type="text/css" data-vue-ssr-id="3db8f3ce:0">
+/* stylelint-disable */
+.app-container[data-v-de31ca60] { order: 100; align-self: flex-start;
+}
+.app-dash[data-v-de31ca60] {
+}
+.active .app-dash[data-v-de31ca60] { opacity: 1;
+}
+.placeholder[data-v-de31ca60] { position: relative; display: inline-block;
+} /* inline-block needed for Firefox */
+.placeholder .hide[data-v-de31ca60] { opacity: 0;
+}
+.placeholder .icon-add[data-v-de31ca60] { --icon-size: 21px; position: absolute; right: 0; bottom: 4px;
+}
+.Safari .icon-add[data-v-de31ca60] { -webkit-transform: translate3d(0, 0, 0);
+} /* fixes subpixel movement when hovering */
+.metric-label[data-v-de31ca60] { white-space: nowrap;
+}
+.app[data-v-de31ca60] { --app-padding: 27px; text-align: center;
+}
+.title-wrapper[data-v-de31ca60] { padding: 0 0 12px;
+}
+.title[data-v-de31ca60] { margin: -3px 0 3px; color: var(--color-accent-safe); font-size: 20px; font-weight: 600;
+}
+.description[data-v-de31ca60] { margin: 4px 0; opacity: 0.7; font-size: 14px;
+}
+.tiles[data-v-de31ca60] { display: flex; justify-content: space-between;
+}
+.tile[data-v-de31ca60] { width: 32%; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; border-radius: var(--border-radius); cursor: pointer;
+}
+.tile[data-v-de31ca60]:hover { background: var(--color-stop-1);
+}
+.tile[data-v-de31ca60]:hover:active { background: var(--color-stop-2);
+}
+[data-v-de31ca60] .widget-icon { --size: 24px; height: var(--size); width: var(--size); margin: 5px auto 6px; opacity: 0.9;
+}
+.widget-name[data-v-de31ca60] { font-size: 15px;
+}
+.tile .badge[data-v-de31ca60] { margin-top: 5px; margin-left: 0;
+}
+.mobile-close[data-v-de31ca60] { position: absolute; top: var(--app-padding); right: var(--app-padding);
+}
+@media screen and (max-width: 450px) {
+.app-container[data-v-de31ca60] { display: none;
+}
+		/*.app { position: fixed; right: var(--app-offset); }*/
+		/*	.nipple-top-right:after { right: 104px; }*/
+}
+</style><style type="text/css" data-vue-ssr-id="317a9898:0">
+/* stylelint-disable */
+.toast-hide[data-v-585a48d3] { opacity: 0;
+}
+.toast-visible .icon[data-v-585a48d3] { opacity: 0.8;
+}
+.toast-container[data-v-585a48d3] { height: 0; width: 100%; position: fixed; right: 0; bottom: 0; left: 0; z-index: 100; color: var(--color-text); overflow: visible;
+}
+.toast[data-v-585a48d3] { --toast-padding: calc(var(--app-padding) - 3px); --dropdown-padding: var(--toast-padding); max-width: none !important; margin: 0 !important; padding: 0; position: absolute; top: auto; right: 0 !important; bottom: 0 !important; left: 0 !important; z-index: 2; background-color: var(--color-bg); border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+.toast > *[data-v-585a48d3]:not(.toast-header):first-child { padding-top: calc(var(--app-padding) / 2);
+}
+.toast-header[data-v-585a48d3] { padding: var(--toast-padding); text-align: left;
+}
+[data-v-585a48d3] .toast-title { line-height: 1.25;
+}
+[data-v-585a48d3] .toast-source { margin-top: 4px; opacity: 0.7; font-size: 0.75rem; font-weight: 600;
+}
+.toast-list[data-v-585a48d3] li { max-width: 100% !important;
+}
+.header-line[data-v-585a48d3] { margin: 0 -4px 4px !important;
+}
+.section-title[data-v-585a48d3] { margin: var(--toast-padding); margin-bottom: 5px; opacity: 0.95; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: left; text-transform: uppercase;
+} /* remove line-height when .focus-row { line-height: 120%; } is removed */
+[data-v-585a48d3] .toast .line { height: 1px; margin: 3px var(--toast-padding); background: var(--border-color);
+}
+[data-v-585a48d3] .dropdown-list-item { padding-right: var(--toast-padding); padding-left: var(--toast-padding);
+}
+.button-close[data-v-585a48d3] { margin: var(--toast-padding); margin-top: calc(var(--toast-padding) - 8px); padding: 6px; padding-bottom: 5px; display: block; background: var(--border-color-low) !important; color: var(--color-text) !important; font-size: 12px; line-height: 1.2; text-align: center;
+} /* remove line-height when .focus-row { line-height: 120%; } is removed */
+.button-close[data-v-585a48d3]:active { background: var(--border-color) !important;
+}
+.button-label[data-v-585a48d3] { opacity: 0.8;
+}
+.toast-overlay[data-v-585a48d3] { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1; background: hsla(0 0% 0% / 50%);
+}
+.slide-up-enter-active[data-v-585a48d3], .slide-up-leave-active[data-v-585a48d3] { transition: all 0.2s ease;
+}
+.slide-up-enter[data-v-585a48d3], .slide-up-leave-to[data-v-585a48d3]  { transform: translateY(100%);
+}
+</style><style type="text/css" data-vue-ssr-id="572fefc0:0">
+/* stylelint-disable */
+.photo-info[data-v-47ba3f80] { min-width: 0; flex: 0 1 auto;
+}
+.photo-info .app-dash[data-v-47ba3f80] { height: var(--top-and-bottom-row-min-height); display: flex; justify-content: center; transition: all 0s var(--a-curve), opacity 1s var(--a-curve), transform 1s var(--a-curve);
+}
+.photo-info .app-dash[data-v-47ba3f80]:before { opacity: 0; content: ''; transition: opacity 1s var(--a-curve);
+}
+.photo-info.add-shadow[data-v-47ba3f80]:before { left: -40px; opacity: 0.3;
+}
+.title[data-v-47ba3f80], .source[data-v-47ba3f80] { width: max-content; transition: all 0.3s ease;
+}
+.title[data-v-47ba3f80] { --hover-offset: -2px; padding: 5px 0; display: inline;
+}
+.has-button > .title[data-v-47ba3f80] { --hover-offset: -6px !important;
+}
+.app-dash .title[data-v-47ba3f80] { opacity: 0.8; font-size: 0.8125rem;
+}
+body:not(.touch) .app-dash .title[data-v-47ba3f80] { transform: translateZ(0) translateY(10px);
+}
+body:not(.touch) .photo-info .app-dash:hover .title[data-v-47ba3f80], .photo-info .app-dash.show-hover .title[data-v-47ba3f80] { transform: none;
+}
+.hotkey-hover .title[data-v-47ba3f80] { transition-duration: 1s;
+}
+.source[data-v-47ba3f80] { --show-hover-transition: opacity 0.1s var(--a-curve); display: flex; align-items: center; font-size: 0.6875rem;
+}
+.app-dash .source[data-v-47ba3f80] { opacity: 0; transform: translateZ(0) translateY(-13px);
+}
+.touch .app-dash:not(.show-hover) .source[data-v-47ba3f80] { display: none;
+}
+.app-dash:hover .source[data-v-47ba3f80], .app-dash.show-hover .source[data-v-47ba3f80], .app-dash.pseudo-hover .source[data-v-47ba3f80] { opacity: 1; transform: translateZ(0) translateY(-2px);
+}
+.hotkey-hover .source[data-v-47ba3f80] { transition-duration: 0.8s;
+}
+.source-link[data-v-47ba3f80] { margin: -3px; margin-right: 0px; padding: 3px; opacity: 0.7; cursor: pointer; line-height: 20px; transition: all 0.2s var(--a-curve); vertical-align: top;
+}
+.source-link[data-v-47ba3f80]:hover { opacity: 0.9 !important;
+}
+.touch .source-link[data-v-47ba3f80] { pointer-events: none;
+}
+.control[data-v-47ba3f80] { --size: 16px; height: var(--size); width: var(--size); margin: -2px 0; padding: 2px 1px; position: relative; display: inline-flex; align-items: center; justify-content: center; opacity: 0.7; box-sizing: content-box; cursor: pointer; transition: var(--show-hover-transition);
+}
+.control[data-v-47ba3f80]:hover, .control.active[data-v-47ba3f80] { opacity: 1;
+}
+.control .icon[data-v-47ba3f80] { --icon-size: 14px; height: var(--icon-size); width: var(--icon-size);
+}
+.app-dash.show-hover .control[data-v-47ba3f80] { opacity: 0;
+}
+.app-dash.show-hover:hover .control[data-v-47ba3f80] { opacity: 0.7;
+}
+.app-dash.show-hover .control[data-v-47ba3f80]:hover { opacity: 1;
+}
+
+
+/* Mobile */
+@media screen and (max-width: 450px) {
+.title[data-v-47ba3f80], .source[data-v-47ba3f80] { width: auto;
+}
+.title[data-v-47ba3f80], .source-link[data-v-47ba3f80] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.title[data-v-47ba3f80] { height: auto; font-size: 0.75rem; font-style: italic; line-height: 1.2;
+}
+}
+</style><style type="text/css">.smooth-reflow[data-v-256e142c]{position:relative}.smooth-reflow.tr-height.tr-width[data-v-256e142c]{transition:height var(--3872912c) ease,width var(--3872912c) ease}.smooth-reflow.tr-height[data-v-256e142c]{transition:height var(--3872912c) ease}.smooth-reflow.tr-width[data-v-256e142c]{display:flex;justify-content:center;transition:width var(--3872912c) ease}.smooth-reflow.tr-width>div[data-v-256e142c]{width:fit-content}.smooth-reflow.hide-overflow[data-v-256e142c]{overflow:hidden}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> .smooth-height-fade-enter-active{transition:opacity var(--7b63f4cb) cubic-bezier(0.85, -0.18, 0.66, 0.66)}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> .smooth-height-fade-leave-active{position:absolute !important;top:0;right:0;left:0;transition:opacity var(--7b63f4cb) cubic-bezier(0.33, 0.13, 0.33, 1.26)}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-height-fade-enter, .smooth-height-fade-leave-to){opacity:0}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> .smooth-width-fade-enter-active{transition:opacity var(--7b63f4cb) cubic-bezier(0.85, -0.18, 0.66, 0.66)}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> .smooth-width-fade-leave-active{position:absolute;top:0;left:50%;transform:translateX(-50%);transition:opacity var(--7b63f4cb) cubic-bezier(0.33, 0.13, 0.33, 1.26)}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-width-fade-enter, .smooth-width-fade-leave-to){opacity:0}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-height-slide-left-enter-active, .smooth-height-slide-left-leave-active,
+ .smooth-height-slide-right-enter-active, .smooth-height-slide-right-leave-active){transition:transform 300ms ease}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-height-slide-left-leave-active, .smooth-height-slide-right-leave-active){position:absolute;top:0;right:0;left:0}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-height-slide-left-leave-to, .smooth-height-slide-right-enter){transform:translateX(-100%)}.smooth-reflow:not(.tr-disabled)>div[data-v-256e142c]> :is(.smooth-height-slide-left-enter, .smooth-height-slide-right-leave-to){transform:translateX(100%)}</style><style type="text/css">.launchpad-container[data-v-31fef31c]{width:min(clamp(600px,60vw,800px),100%);position:relative;align-self:stretch;margin:auto}.fade-deep-enter-active[data-v-31fef31c].focuses,.fade-deep-enter-active[data-v-31fef31c] .three-col-layout--left,.fade-deep-enter-active[data-v-31fef31c] .search .search-form,.fade-deep-enter-active[data-v-31fef31c] .search .backdrop-filter,.fade-deep-leave-active[data-v-31fef31c].focuses,.fade-deep-leave-active[data-v-31fef31c] .three-col-layout--left,.fade-deep-leave-active[data-v-31fef31c] .search .search-form,.fade-deep-leave-active[data-v-31fef31c] .search .backdrop-filter{transition:opacity .5s ease}.fade-deep-enter[data-v-31fef31c].focuses,.fade-deep-enter[data-v-31fef31c] .three-col-layout--left,.fade-deep-enter[data-v-31fef31c] .search .search-form,.fade-deep-enter[data-v-31fef31c] .search .backdrop-filter,.fade-deep-leave-to[data-v-31fef31c].focuses,.fade-deep-leave-to[data-v-31fef31c] .three-col-layout--left,.fade-deep-leave-to[data-v-31fef31c] .search .search-form,.fade-deep-leave-to[data-v-31fef31c] .search .backdrop-filter{opacity:0 !important}</style><style type="text/css" data-vue-ssr-id="369a6654:0">
+/* stylelint-disable */
+.dropdown[data-v-2e98129d] { display: block;
+} /* Override general stylesheet dropdown styling for display: block, but move to this when refactor complete; */
+.dropdown-hide[data-v-2e98129d] { opacity: 0;
+}
+.dropdown-visible .icon[data-v-2e98129d] { opacity: 0.8;
+}
+.open-enter-active[data-v-2e98129d], .open-leave-active[data-v-2e98129d] { transition: opacity 0.1s ease;
+} /* Consolidate this with center nav and other animations? */
+.open-enter[data-v-2e98129d], .open-leave-to[data-v-2e98129d] { opacity: 0;
+}
+
+</style><style type="text/css" data-vue-ssr-id="42466de9:0">
+/* stylelint-disable */
+.more-dropdown[data-v-25ac81a2] { display: block;
+} /* TODO. remove this once we remove the use of 'active' class on more icons */
+.search-form[data-v-25ac81a2] { position: relative; margin: 1.0625rem 0.625rem; display: flex;
+}
+.search .search-input[data-v-25ac81a2] { height: calc(24px + 2 * 1.0625rem); width: 100%; max-width: var(--width); margin: -1.0625rem 0; z-index: 2; background: none; border: none; cursor: pointer; line-height: 20px; outline: none;
+}
+.app-dash .search-input[data-v-25ac81a2] { color: #fff;
+}
+.search-underline[data-v-25ac81a2] { margin-top: 17px; position: absolute; top: 50%; right: 0; left: 0; z-index: 1; opacity: 0; border-bottom: 2px solid white; transition: opacity var(--a-fast) var(--a-curve);
+}
+.search:hover .search-underline[data-v-25ac81a2] { opacity: 0.4;
+}
+.search:focus-within .search-underline[data-v-25ac81a2] { opacity: 1;
+}
+.search .search-icon-container[data-v-25ac81a2] { padding: 0 0.25rem 0 0; display: flex; align-items: center; transition: opacity var(--a-fast) var(--a-curve);
+}
+.search .search-icon-container .icon-search[data-v-25ac81a2] { --icon-size: 16px; opacity: 0.85;
+}
+.search:hover .search-icon-container .icon-search[data-v-25ac81a2], .search:focus-within .search-icon-container .icon-search[data-v-25ac81a2] { opacity: 1;
+}
+.search .right-wrapper[data-v-25ac81a2] { display: flex;
+}
+.search .right-wrapper .icon[data-v-25ac81a2] { --icon-size: 16px; height: var(--icon-size); width: var(--icon-size);
+}
+.search .source[data-v-25ac81a2] { display: flex; opacity: 0; transition: var(--a-fast) var(--a-curve);
+}
+.search:hover .source[data-v-25ac81a2] { opacity: 0.65;
+}
+.search:focus-within .source[data-v-25ac81a2] { opacity: 1;
+}
+.search .source-toggle[data-v-25ac81a2] { position: relative; align-self: center; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none;
+}
+
+				/* Icons */
+.search .source-toggle .icon-dropdown[data-v-25ac81a2] { --icon-size: 14px; display: block; opacity: 0.5; fill: #fff; transition: 0.1s var(--a-curve);
+}
+.source.active .source-toggle .icon-dropdown[data-v-25ac81a2] { opacity: 1; transition-duration: 0s;
+}
+.search .source[data-v-25ac81a2] .dropdown { margin-top: 29px; top: 50%; right: -100px; left: auto;
+}
+.search[data-v-25ac81a2] .dropdown.nipple-top-right:after { right: 14px;
+}
+.search .dropdown .search-provider[data-v-25ac81a2] { outline: none;
+}
+.search .dropdown .icon[data-v-25ac81a2] { max-height: 15px;
+}
+
+					/* TODO: Generalize the padding here to match dropdown li headings (might need to just move this direct to general dropdown styling */
+.search .dropdown .heading[data-v-25ac81a2] { padding: 4px 14px 6px; opacity: 0.75; cursor: default; font-size: 0.625rem; font-weight: 500; text-transform: uppercase;
+}
+.search .dropdown[data-v-25ac81a2] .dropdown-list-icon { --icon-size: 15px;
+}
+.search .dropdown .icon.active[data-v-25ac81a2] { opacity: 1;
+}
+
+
+/* Search in center */
+.big .search-form[data-v-25ac81a2] { --action-width: 50px; margin: 0; height: 100%;
+}
+.big .search-icon-container[data-v-25ac81a2] { padding: 0 0.8125rem 0 1.5rem; display: flex; align-items: center;
+}
+.big .icon-search[data-v-25ac81a2] { --size: 26px; height: var(--size); width: var(--size); margin: 0; position: relative; top: auto; left: auto; text-shadow: none;
+}
+.big .search-input[data-v-25ac81a2] { height: var(--height); max-width: none; padding: 0 0 1px; font-size: 28px; margin: 0;
+}
+.big .search-input[data-v-25ac81a2]::placeholder { opacity: 0.5; color: #fff;
+}
+.big:focus-within .more[data-v-25ac81a2] { pointer-events: auto;
+}
+.big .right-wrapper .icon[data-v-25ac81a2] { --icon-size: 18px;
+}
+.big .right-wrapper .ask-ai[data-v-25ac81a2] { display: flex; align-items: center; padding: 0 0.625rem; cursor: pointer;
+}
+.big .source.dropdown-visible[data-v-25ac81a2]  { opacity: 1;
+}
+.big .source[data-v-25ac81a2] { opacity: 1;
+}
+.big:hover .source[data-v-25ac81a2] { opacity: 1;
+}
+.big .source-toggle[data-v-25ac81a2] { width: var(--action-width); margin-right: 0; padding-right: 10px; align-self: stretch;
+}
+.big .source-selected[data-v-25ac81a2] { display: flex;
+}
+.big .source-selected .icon-ecosia[data-v-25ac81a2] { --icon-size: 16px; margin-right: -1px;
+}
+
+		/* Review if this specificity/redundancy is necessary */
+.big .source-toggle .icon-dropdown[data-v-25ac81a2], .big .source-toggle .icon-source[data-v-25ac81a2] { transition: var(--a-fast) var(--a-curve);
+}
+.big .source-toggle:hover .icon-dropdown[data-v-25ac81a2], .big .source-toggle:hover .icon-source[data-v-25ac81a2] { opacity: 1;
+}
+.big .dropdown-visible .source-toggle .icon-source[data-v-25ac81a2] { opacity: 1;
+}
+.big:focus-within .source-toggle .icon-source[data-v-25ac81a2] { opacity: 1;
+}
+.big .source-toggle .icon-dropdown[data-v-25ac81a2] { --icon-size: 16px; margin: 0; margin-left: -1px; opacity: 0;
+}
+.big .dropdown-visible .source-toggle .icon-dropdown[data-v-25ac81a2] { opacity: 0.6;
+}
+.big .source[data-v-25ac81a2] .dropdown { margin-top: -2px; top: 100%; right: auto; left: -5px;
+}
+.big .search-underline[data-v-25ac81a2] { display: none;
+}
+
+
+	/* Mobile */
+@media screen and (max-width: 450px) {
+.big .search-form[data-v-25ac81a2] { width: auto;
+}
+.big .search-icon-container[data-v-25ac81a2] { margin-left: -2px;
+}
+.big .icon-search[data-v-25ac81a2] { --size: 20px;
+}
+.big .search-input[data-v-25ac81a2] { font-size: 21px;
+}
+.big .source-toggle .icon-dropdown[data-v-25ac81a2] { opacity: 0.5;
+}
+}
+</style><style type="text/css" data-vue-ssr-id="b31f37aa:0">
+/* stylelint-disable */
+.app-popup[data-v-102d77f9] { --origin-inset: 0px; --top: auto; --bottom: auto; --right: auto; --left: auto; height: calc(100vh - (var(--origin-inset) + var(--app-edge-padding))); width: var(--width); max-width: calc(100vw - (var(--app-edge-padding) * 2)); position: absolute !important; z-index: 2; top: var(--top); bottom: var(--bottom); right: var(--right); left: var(--left); pointer-events: none;
+}
+.app-popup.fullscreen.nipple[data-v-102d77f9]::after, .app-popup.animating.nipple[data-v-102d77f9]::after { opacity: 0;
+}
+.app-popup.focused[data-v-102d77f9] { z-index: 4;
+}
+.app-popup.unfocused > .app[data-v-102d77f9], .app-popup.unfocused[data-v-102d77f9]::after { filter: brightness(var(--unfocused-app-brightness)) blur(2px);
+}
+.app[data-v-102d77f9] { height: auto; min-height: auto; max-height: 100%; max-width: unset !important; position: absolute !important; top: var(--app-top); bottom: var(--app-bottom); right: 0; left: 0; display: flex; flex-direction: column; align-items: stretch; background-color: var(--color-bg); border-radius: var(--border-radius); pointer-events: auto; overflow: hidden; isolation: isolate;
+}
+.fullscreen:not(.animating) .app[data-v-102d77f9], .fullscreen:not(.animating) .app[data-v-102d77f9] > * { border-radius: 0;
+}
+.animating .app[data-v-102d77f9] { transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease-in-out, right 0.2s ease-in-out, bottom 0.2s ease-in-out, left 0.2s ease-in-out;
+}
+.animating .app[data-v-102d77f9] > * { opacity: 0;
+}
+.app[data-v-102d77f9] > * { transition: opacity var(--opacity-anim-duration) ease-in-out;
+}
+.nipple-top-left[data-v-102d77f9]:after, .nipple-bottom-left[data-v-102d77f9]:after { left: var(--nipple-displacement);
+}
+.nipple-top-right[data-v-102d77f9]:after, .nipple-bottom-right[data-v-102d77f9]:after { right: var(--nipple-displacement);
+}
+		 /* This needs to be in this component (or general stylesheet) or else the transition won't work when the component is async. I don't know why. */
+.slide-down-fade-enter-active[data-v-102d77f9], .slide-down-fade-leave-active[data-v-102d77f9], .slide-up-fade-enter-active[data-v-102d77f9], .slide-up-fade-leave-active[data-v-102d77f9] { transition: transform 0.2s ease, opacity 0.2s ease, inset 0s;
+} /* inset 0s is to fix a case where the app transitions right when opening if it is flipping horizontal direction */
+.slide-down-fade-enter[data-v-102d77f9], .slide-down-fade-leave-to[data-v-102d77f9] { opacity: 0; transform: translateY(-3px);
+}
+.slide-up-fade-enter[data-v-102d77f9], .slide-up-fade-leave-to[data-v-102d77f9] { opacity: 0; transform: translateY(3px);
+}
+		 /* An app can be opened in fullscreen mode immediately, so prevent the transform from happening to avoid any weird width/height jumps */
+.slide-down-fade-enter-active.fullscreen[data-v-102d77f9], .slide-down-fade-leave-active.fullscreen[data-v-102d77f9], .slide-up-fade-enter-active.fullscreen[data-v-102d77f9], .slide-up-fade-leave-active.fullscreen[data-v-102d77f9] { transition: opacity 0.2s ease, inset 0s;
+}
+.slide-down-fade-enter.fullscreen[data-v-102d77f9], .slide-down-fade-leave-to.fullscreen[data-v-102d77f9] { opacity: 0; transform: unset;
+}
+.slide-up-fade-enter.fullscreen[data-v-102d77f9], .slide-up-fade-leave-to.fullscreen[data-v-102d77f9] { opacity: 0; transform: unset;
+}
+@media screen and (max-width: 450px) {
+.app-popup[data-v-102d77f9] { height: var(--app-max-height); position: fixed !important;
+}
+.top-row .app-popup[data-v-102d77f9] { top: var(--app-edge-padding);
+}
+.bottom-row .app-popup[data-v-102d77f9] { bottom: var(--app-edge-padding);
+}
+.top-left .app-popup[data-v-102d77f9], .bottom-left .app-popup[data-v-102d77f9] { left: var(--app-edge-padding);
+}
+.top-right .app-popup[data-v-102d77f9], .bottom-right .app-popup[data-v-102d77f9] { right: var(--app-edge-padding);
+}
+.slide-down-fade-enter-active[data-v-102d77f9], .slide-down-fade-leave-active[data-v-102d77f9], .slide-up-fade-enter-active[data-v-102d77f9], .slide-up-fade-leave-active[data-v-102d77f9] { transition: transform 0.2s ease, opacity 0.2s ease, inset 0s;
+} /* inset 0s is to fix a case where the app transitions right when opening if it is flipping horizontal direction */
+.slide-down-fade-enter[data-v-102d77f9], .slide-down-fade-leave-to[data-v-102d77f9] { opacity: 0; transform: translateY(calc(var(--app-translate-amount) * -1));
+}
+.slide-up-fade-enter[data-v-102d77f9], .slide-up-fade-leave-to[data-v-102d77f9] { opacity: 0; transform: translateY(var(--app-translate-amount));
+}
+}
+.app-popup[data-v-102d77f9]::after {
+	content: var(--62a85b1e);
+}
+.fade-blurred-app-enter-active[data-v-102d77f9] > :is(.app, .app-shadow),
+.fade-blurred-app-leave-active[data-v-102d77f9] > :is(.app, .app-shadow) {
+	transition: opacity 0.2s ease;
+}
+.fade-blurred-app-enter[data-v-102d77f9] > :is(.app, .app-shadow),
+.fade-blurred-app-leave-to[data-v-102d77f9] > :is(.app, .app-shadow) {
+	opacity: 0;
+}
+.slide-down-fade-blurred-app-enter-active[data-v-102d77f9] > :is(.app, .app-shadow),
+.slide-down-fade-blurred-app-leave-active[data-v-102d77f9] > :is(.app, .app-shadow),
+.slide-up-fade-blurred-app-leave-active[data-v-102d77f9] > :is(.app, .app-shadow),
+.slide-up-fade-blurred-app-leave-active[data-v-102d77f9] > :is(.app, .app-shadow) {
+	transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.slide-down-fade-blurred-app-enter[data-v-102d77f9] > :is(.app, .app-shadow),
+.slide-down-fade-blurred-app-leave-to[data-v-102d77f9] > :is(.app, .app-shadow) {
+	opacity: 0; transform: translateY(-3px);
+}
+.slide-up-fade-blurred-app-enter[data-v-102d77f9] > :is(.app, .app-shadow),
+.slide-up-fade-blurred-app-leave-to[data-v-102d77f9] > :is(.app, .app-shadow) {
+	opacity: 0; transform: translateY(3px);
+}
+
+</style><style type="text/css" data-vue-ssr-id="46c8e690:0">
+/* stylelint-disable */
+/* Touch popup */
+.app[data-v-7f127034] .app-body { padding: var(--app-padding);
+}
+.app[data-v-7f127034] .search-underline { display: none;
+}
+.app-dash-icon[data-v-7f127034] { height: var(--top-and-bottom-row-min-height);
+}
+</style><style type="text/css" data-vue-ssr-id="0b1171a0:0">
+/* stylelint-disable */
+.search[data-v-4e7789dd] { --width: 240px; --icon-size: 16px; height: var(--top-and-bottom-row-min-height); width: 100%; max-width: var(--width); position: relative; flex: 2 2 auto; order: 11; display: inline-block; cursor: pointer;
+}
+body:not(.touch) .search[data-v-4e7789dd] { flex-basis: 150px; min-width: 150px;
+}
+[data-v-4e7789dd] .app-dash { height: var(--top-and-bottom-row-min-height); padding: 0 var(--side-padding);
+}
+[data-v-4e7789dd] .app-dash .icon-search { --icon-size: 18px;
+}
+</style><style type="text/css" data-vue-ssr-id="8f059ff8:0">
+/* stylelint-disable */
+.center-container { display: flex; flex-direction: column;
+}
+</style><style type="text/css">.dashlinks{flex:0 0 auto;order:10;--side-padding:10px}.dashlinks-icon-wrapper{min-height:var(--top-and-bottom-row-min-height);max-height:var(--max-height);cursor:pointer;filter:drop-shadow(0 1px 5px rgba(0, 0, 0, .1));transition:opacity .1s ease}.dashlinks-icon-wrapper:hover{opacity:1}.dashlinks-icon-wrapper:active{opacity:.9;transition-duration:0s}.dashlinks .dashlinks-icon{height:18px;width:18px;margin:0;fill:#fff!important;vertical-align:-4%}</style><style type="text/css">.dropdown-portal[data-v-51133c55]>*{z-index:50}.dropdown-portal[data-v-51133c55] .base-dropdown-container.app{--dropdown-padding: calc(var(--app-padding) - 0.375rem);--dropdown-color: var(--color-text);--dropdown-background-color: var(--color-accent-highlight)}.dropdown-portal[data-v-51133c55] .base-dropdown-container.dash{--dropdown-padding: calc(var(--app-padding) - 0.375rem);--dropdown-color: var(--color-text);--dropdown-background-color: var(--color-bg)}</style><style type="text/css">.full-screen-portals[data-v-4e7d8916]{position:absolute;inset:0}.full-screen-portals .toast-menu-portal[data-v-4e7d8916]>*{z-index:45}</style><style type="text/css" data-vue-ssr-id="403321e3:0">
+/* stylelint-disable */
+
+/*
+	Quote vertical positioning rules:
+	- If the quote is one line: vertically aligned with background info and Notes/To-do app dashes
+	- If the quote is two lines: vertically aligned with background info and Notes/To-do app dashes so that space between two lines is centered
+	- If the quote is more than two lines: respect the dash vertical margin and move the quote up as lines increase
+	When hovered:
+	- Source should translate down to edge of screen, it does not need to respect the dash vertical padding
+	- Body must translate up only as much as necessary, this means it will need to translate more if it is 2+ lines.
+
+	Quote horizontal positioning rules:
+	- Quote body element must extend the entire width of the bottom (middle) region even if the quote is wrapping
+	  to ensure that if the region expands it will trigger the resize observer.
+*/
+.quote[data-v-0b56f9fa] { --below-height: 30px; --max-translate-y: calc((var(--below-height) - var(--dash-vertical-margin)) * -1); min-height: var(--top-and-bottom-row-min-height); width: 100%; margin-top: calc(var(--max-translate-y) * -1); padding: 0; display: flex; align-items: center; text-align: center;
+}
+.app-dash[data-v-0b56f9fa] { padding: var(--dash-vertical-margin) 5px; flex-basis: 100%;
+}
+.body[data-v-0b56f9fa], .below[data-v-0b56f9fa] { margin: 0; color: rgba(255,255,255,0.9); line-height: 1.2; transition: all 0.35s 0.1s var(--a-curve);
+}
+.body[data-v-0b56f9fa] { --relative-translate-y: calc(50% * -1); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.125rem; -moz-user-select: text; -webkit-user-select: text; user-select: text;
+}
+.quote .app-dash:hover .body[data-v-0b56f9fa] { transform: translateY(max(var(--relative-translate-y), var(--max-translate-y)));
+}
+.touch .quote .app-dash:hover .body[data-v-0b56f9fa] { transform: translateY(0);
+}
+.below[data-v-0b56f9fa] { height: var(--below-height); position: absolute; inset: auto 0 0; opacity: 0; font-size: 0.875rem; transform: translateY(-50%);
+}
+.quote .app-dash:hover .below[data-v-0b56f9fa], .quote.pseudo-hover .below[data-v-0b56f9fa] { opacity: 1; transform: translateY(0);
+}
+.below-actions[data-v-0b56f9fa] { display: flex; align-items: center; justify-content: center;
+}
+.source[data-v-0b56f9fa] { margin-right: 4px; opacity: 0.75;
+}
+.below-actions .control[data-v-0b56f9fa] { padding: 6px 3px; position: relative; display: inline-flex; align-items: center; justify-content: center; opacity: 0.75; cursor: pointer; line-height: 100%; vertical-align: middle;
+}
+.below-actions .control[data-v-0b56f9fa]:hover, .below .control.active[data-v-0b56f9fa] { opacity: 1;
+}
+.below-actions .control.skip[data-v-0b56f9fa] { padding-left: 2px;
+}
+.below-actions .icon[data-v-0b56f9fa] { --icon-size: 16px; display: block;
+}
+
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+.quote[data-v-0b56f9fa] { margin-top: 0; padding: 0 10px;
+}
+.quote .body .body-text[data-v-0b56f9fa] { font-size: 1rem !important; font-style: italic;
+}
+}
+</style><style type="text/css" data-vue-ssr-id="5d2eab4a:0">
+/* stylelint-disable */
+.background[data-v-5f354283], .background-item[data-v-5f354283] { position: absolute; top: 0; right: 0; left: 0; bottom: 0; background-color: transparent; background-position: center center; background-repeat: no-repeat; background-size: cover;
+}
+.background[data-v-5f354283] { margin: 0; padding: 0; z-index: 1; transition: transform 0.3s ease-out;
+}
+.background-item[data-v-5f354283] { opacity: 1; transition: var(--14ae2ceb) var(--a-show-full-curve); transform: scale(var(--72fb97fc)); transform-origin: center center;
+}
+.background-item[data-v-5f354283]::after { content: var(--71e9d014); position: absolute; inset: 0; background: inherit; transition: inherit; filter: blur(15px); opacity: var(--31f71d8f);
+}
+.show-full-overlay-active .background-item[data-v-5f354283] { transform: scale(1.05);
+}
+.show-full-overlay .background-item[data-v-5f354283]:before { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 0; opacity: 0; background: rgba(0,0,0,0.5); content: ''; transition: opacity var(--a-show-full-duration) var(--a-show-full-curve);
+}
+.show-full-overlay-active .background-item[data-v-5f354283]:before { opacity: 1;
+}
+.background-overlay[data-v-5f354283] { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; opacity: 1; background-image: url(chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/26068490522b9f5ca27a.png); background-size: 100% 100%; transition: opacity 0.3s ease-out;
+}
+.background-overlay.slow[data-v-5f354283] { transition-duration: 1s;
+}
+.hide-overlay .background-overlay[data-v-5f354283] { opacity: 0 !important;
+}
+.fade-enter-active[data-v-5f354283], .fade-leave-active[data-v-5f354283] { animation: fadein 0.3s ease-out 0s forwards;
+}
+.fade-enter[data-v-5f354283], .fade-leave-to[data-v-5f354283] { opacity: 0;
+}
+.fade-slow-enter-active[data-v-5f354283], .fade-slow-leave-active[data-v-5f354283] { animation: fadein 2s ease-out 0s forwards;
+}
+.fade-slow-enter[data-v-5f354283], .fade-slow-leave-to[data-v-5f354283] { opacity: 0;
+}
+</style><style type="text/css">.touch-overlay.fade-leave-active,.touch-overlay.fade-enter-active{transition:opacity .15s ease}.touch-overlay.fade-leave-to,.touch-overlay.fade-enter{opacity:0}.app-container.fade-leave-to,.app-container.fade-enter{opacity:0 !important}</style><style type="text/css">.base-icon[data-v-2b5cce9a]{--icon-size: var(--b689c742);width:var(--icon-size);height:var(--icon-size);display:flex;align-items:center;justify-content:center;transition:var(--a-default)}.base-icon svg[data-v-2b5cce9a]{width:100%;height:100%;fill:currentcolor}</style><style type="text/css">.app-dash[data-v-fe15987a]{white-space:nowrap}</style><style type="text/css">.app-container[data-v-deaa131a]{order:4}.app-dash-icon[data-v-deaa131a]{pointer-events:all}.focus-mode[data-v-deaa131a]{transition:top .2s ease,var(--app-container-transition)}.focus-mode .click-target[data-v-deaa131a]{display:flex;align-items:center;pointer-events:none}.focus-mode .click-target>.focus-icon[data-v-deaa131a]{--icon-size: 36px;--color-icon: var(--color-stop-4);padding:8px;transition:var(--a-default);cursor:pointer;pointer-events:all}.focus-mode .click-target>.text[data-v-deaa131a]{padding:8px 8px 8px 0;transition:var(--a-default);color:var(--color-stop-4);font-size:.875rem;font-weight:700;text-transform:uppercase;cursor:pointer;pointer-events:all}.focus-mode .ellipsis[data-v-deaa131a]{--icon-size: 15px;--color-icon: var(--color-stop-4);position:relative;margin:-5px;color:var(--color-icon);cursor:pointer;pointer-events:all}.focus-mode .ellipsis[data-v-deaa131a]::before{content:"";position:absolute;border-radius:100%;inset:-5px}.focus-mode .ellipsis[data-v-deaa131a]:hover::before{background-color:var(--color-stop-2)}.focus-mode .click-target:hover>.text[data-v-deaa131a],.focus-mode .click-target:hover>.focus-icon[data-v-deaa131a],.focus-mode .click-target:hover .ellipsis[data-v-deaa131a]{--color-icon: var(--color-stop-6);color:var(--color-stop-6)}.focus-mode.popup-active .click-target>.focus-icon[data-v-deaa131a],.focus-mode.popup-active .click-target>.text[data-v-deaa131a],.focus-mode.popup-active .click-target .ellipsis[data-v-deaa131a]{--color-icon: var(--color-stop-6);color:var(--color-stop-6)}.focus-mode.popup-active .click-target .ellipsis[data-v-deaa131a]::before{background-color:var(--color-stop-2)}.focus-mode.focusing[data-v-deaa131a]{height:40px;display:flex;position:absolute;z-index:1;align-items:center;justify-content:center;padding:5px 0;inset:0}.focus-mode.focusing .icon-container[data-v-deaa131a]{position:relative;padding:25px 10px}</style><style type="text/css" data-vue-ssr-id="0051e90d:0">
+/* stylelint-disable */
+.links[data-v-25d7bdb8] { order: 2;
+}
+</style><style type="text/css">.links-dash[data-v-7cff4af9]{order:3}.links-dash.column[data-v-7cff4af9]{max-width:15rem;max-height:100%}.links-dash.row[data-v-7cff4af9]{min-width:0;flex-shrink:2}.base-item-list.row[data-v-7cff4af9]{height:100%}.base-item-list.row .link-list-item[data-v-7cff4af9]{width:3.5rem;padding:1.0625rem .25rem}@media screen and (width <= 1000px){.links-dash.column[data-v-7cff4af9]{max-width:10rem}}@media screen and (width <= 800px){.links-dash.column[data-v-7cff4af9]{max-width:5rem}}@media screen and (width <= 450px){.links-dash[data-v-7cff4af9]{display:none}}</style><style type="text/css">.app-container[data-v-37c2234b]{order:9}</style><style type="text/css" data-vue-ssr-id="253ab6c6:0">
+/* stylelint-disable */
+.app-container[data-v-4dc7dbde] { order: 0; align-self: flex-start;
+}
+.app-dash[data-v-4dc7dbde] { line-height: normal;
+}
+.metric-label[data-v-4dc7dbde] { white-space: nowrap;
+}
+.metric-stat[data-v-4dc7dbde] { display: flex; align-items: baseline; justify-content: flex-end;
+}
+.current-icon[data-v-4dc7dbde] { margin-right: 6px;
+}
+.icon[data-v-4dc7dbde] { --icon-size: 25px; display: block;
+}
+</style><style type="text/css" data-vue-ssr-id="4ec87fd0:0">
+/* stylelint-disable */
+/* Using em units for font sizing for focus because it needs to scale down for responsive more than the other regions */
+h3[data-v-64b01f1b] { margin: 0; padding: 0;
+}
+.focuses[data-v-64b01f1b] { width: 100%; position: relative; display: flex; flex-direction: column; gap: 0.5rem; align-items: center; vertical-align: top;
+}
+.focuses[data-v-64b01f1b]::before { height: 450px; width: 100%; max-width: 800px; position: absolute; top: 50%; left: 50%; z-index: -1; background: url(chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/4db99af162d6759d96bd.png) no-repeat 50% 60%; background-size: contain; content: " "; transform: translate3d(-50%, -50%, 0); transition: opacity 0.2s;
+}
+.pomodoro .focuses[data-v-64b01f1b] { --font-size-greeting: calc(var(--25586edc) * 3rem);
+}
+.focuses[data-v-64b01f1b] :is(.todays-focus, .focus-input, .hidden-data) { max-width: 87.5vw;
+}
+.pomodoro .focuses[data-v-64b01f1b] :is(.todays-focus, .focus-input, .hidden-data) { max-width: min(450px, 65vw);
+}
+.pomodoro .focuses[data-v-64b01f1b]:before { display: none;
+}
+.focus-wrapper[data-v-64b01f1b] { display: grid; align-items: end; justify-content: center; justify-items: center;
+}
+.focus-inner-wrapper[data-v-64b01f1b], .focus-prompt-wrapper[data-v-64b01f1b] { grid-area: 1 / 1 / 2 / 2;
+}
+.focus-wrapper .greeting[data-v-64b01f1b] { width: 100%; position: relative; display: inline-block !important; overflow: visible;
+}
+.prompt[data-v-64b01f1b] { --input-padding: 4px 2px 1px; min-width: 0; flex-shrink: 1;
+}
+[data-v-64b01f1b] .focus-question { margin: 0; font-size: 2.1875em; font-weight: 400; line-height: normal;
+}
+[data-v-64b01f1b] .focus-input, .prompt .hidden-data[data-v-64b01f1b] { width: 100%; padding: var(--input-padding); display: block; background: 0; border: 0; border-bottom: 2px solid #fff; -webkit-border-radius: 0; color: #fff; font-size: 2.25em; font-weight: 500; line-height: 1.2; outline: none; text-align: center; transition: border-color .2s ease; /* -webkit-border-radius: removes curves on iOS */
+}
+[data-v-64b01f1b] .focus-input::placeholder { color: #fff;
+}
+.prompt .hidden-data[data-v-64b01f1b] { height: 0; padding-top: 0; padding-bottom: 0; display: block; border: none; border-bottom: none; transition: none; visibility: hidden;
+}
+.focus-prompt-wrapper[data-v-64b01f1b] { width: 100%;
+}
+.focus-prompt-wrapper[data-v-64b01f1b] .three-col-layout--center { display: flex; justify-content: center;
+}
+.team-focus-wrapper[data-v-64b01f1b] { position: relative;
+}
+@media screen and (max-width: 450px) {
+.focuses[data-v-64b01f1b] {
+}
+.focuses[data-v-64b01f1b]:before { display: none;
+}
+.pomodoro .focuses[data-v-64b01f1b] { --font-size-greeting: clamp(10px, 8vw, 32px);
+}
+.focus-wrapper[data-v-64b01f1b] { padding-bottom: 6px;
+}
+.prompt[data-v-64b01f1b] { padding-bottom: 0;
+}
+[data-v-64b01f1b] .focus-question { margin-bottom: 4px !important; font-size: 20px !important;
+} /* Ensure we deep select to target both the actual question and the placeholder one in FocusContent */
+[data-v-64b01f1b] .focus-input { margin-bottom: -2px; font-size: 24px !important;
+}
+[data-v-64b01f1b] .button { --v-padding: 7px; font-size: 0.875rem;
+}
+.team-focus .side-col[data-v-64b01f1b] { flex-basis: 0;
+}
+}
+.font-sizer[data-v-64b01f1b] { height: 0; overflow: hidden; position: fixed; white-space: nowrap; font-size: 1rem !important;
+}
+</style><style type="text/css" data-vue-ssr-id="0ba82a97:0">
+/* stylelint-disable */
+.percent-format[data-v-7ad1b549] { top: 65%; opacity: 1; font-size: 25%;
+}
+@media screen and (max-width: 450px) {
+.percent-format[data-v-7ad1b549] { margin-bottom: -3px; top: auto; font-size: 62%;
+}
+}
+</style><style type="text/css">.clocks-reflow[data-v-34d6a5e6]{max-width:100%}</style><style type="text/css" id="themeCss">:root { --color-hue: 87; --color-sat: 42%; --color-lit: 34%; --color-alpha: 0.95; ;--color-accent-safe: hsla(87 42% 34% / 0.95);}</style><meta id="safariTabTheme" name="theme-color" content="hsla(87 42% 34% / 0.95)"><style type="text/css" data-vue-ssr-id="6ccb7078:0">
+/* stylelint-disable */
+.greeting .content[data-v-da9c11e0] { display: inline;
+}
+.name-punctuation-no-wrap[data-v-da9c11e0] { white-space: nowrap;
+}
+.greeting .name-wrapper[data-v-da9c11e0] { position: relative; white-space: nowrap;
+}
+.greeting .name[data-v-da9c11e0], .greeting .hidden-span[data-v-da9c11e0] { max-width: min(100%, 12em); display: inline-block;
+}
+.hidden-span[data-v-da9c11e0] { visibility: hidden;
+}
+.greeting .name[data-v-da9c11e0] { border-radius: 3px; outline: none; overflow: hidden; vertical-align: top; white-space: nowrap;
+}
+input.name[data-v-da9c11e0] { padding: 0; position: absolute; inset: 0;
+}
+.input-wrapper[data-v-da9c11e0] { margin: -5px -2px -8px; padding: 5px 2px 8px; position: relative;
+}
+.greeting .name.editing[data-v-da9c11e0], .greeting .hidden-span[data-v-da9c11e0] { min-width: 1.5em;
+}
+.greeting .name.editing[data-v-da9c11e0] { border: none; font-weight: 500; text-align: center; border-bottom: 3px solid white; border-bottom-left-radius: 0; border-bottom-right-radius: 0; cursor: auto;
+}
+.f--quirky .greeting .name.editing[data-v-da9c11e0], .f--startup .greeting .name.editing[data-v-da9c11e0] { padding-bottom: 0;
+}
+.f--modern .greeting .name.editing[data-v-da9c11e0] { padding-bottom: 3px;
+}
+.Firefox .greeting .name.editing[data-v-da9c11e0]:after { content: '';
+} /* Necessary to fix bug where moving cursor to right edge of contenteditable name would cause blur event on Firefox */
+</style><style type="text/css" data-vue-ssr-id="ae1c81aa:0">
+/* stylelint-disable */
+.nav[data-v-0876512d] { display: flex;
+}
+.nav-item[data-v-0876512d] { position: relative; display: flex; align-items: center;
+}
+.nav-item .icon[data-v-0876512d] { padding: var(--icon-padding) calc(var(--icon-padding) - 4px); opacity: 0.5; color: var(--color-text);
+}
+.nav-item:first-child .icon[data-v-0876512d] { padding-left: calc(var(--icon-padding) + 2px);
+}
+.nav-item:last-child .icon[data-v-0876512d] { padding-right: calc(var(--icon-padding) + 2px);
+}
+.nav-item:hover .icon[data-v-0876512d] { opacity: 0.8;
+}
+.nav-item:hover:active .icon[data-v-0876512d], .nav-item.active .icon[data-v-0876512d] { opacity: 1 !important;
+}
+.nav-title[data-v-0876512d] { display: none;
+}
+.tooltip[data-v-0876512d] { padding: 3px 5px; position: absolute; top: calc(100% + 2px); left: 50%; z-index: 1; display: none; background: hsla(0deg 0% 15% / 95%); border-radius: 4px; color: white; font-size: 0.8125rem; transform: translateX(-50%); white-space: nowrap;
+}
+.nav-item:hover .tooltip[data-v-0876512d] { display: block;
+}
+.tooltip .badge[data-v-0876512d] { background: rgba(255 255 255 / 20%); color: white;
+}
+
+	/* Mobile */
+.toast .nav[data-v-0876512d] { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-column-gap: 10px;
+}
+.toast .nav-item[data-v-0876512d] { padding: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; box-shadow: inset 0 0 0 1.5px var(--border-color); font-size: 12px;
+}
+.toast .nav-icon[data-v-0876512d] { --size: 22px; height: var(--size); width: var(--size); margin: 3px 0; opacity: 0.5; border-radius: 4px;
+}
+.toast .nav-title[data-v-0876512d] { margin: 1px 0 -1px; display: block; opacity: 0.7; line-height: 1.2;
+} /* remove line-height when .focus-row { line-height: 120%; } is removed */
+.toast .tooltip[data-v-0876512d] { display: none;
+}
+.toast .nav-item.active[data-v-0876512d], .toast .nav-item[data-v-0876512d]:active { background: var(--border-color); box-shadow: none;
+}
+.toast .nav-item.active .nav-icon[data-v-0876512d], .toast .nav-item.active .nav-title[data-v-0876512d] { opacity: 1;
+}
+
+</style><style type="text/css" data-vue-ssr-id="27c1289a:0">
+/* stylelint-disable */
+.container[data-v-0a29fe7d] { --icon-padding: 11px; margin-right: 20px; position: relative; z-index: 1; display: flex; align-items: center;
+}
+[data-v-0a29fe7d] .icon { --icon-size: 24px; padding: var(--icon-padding); box-sizing: content-box; cursor: pointer; vertical-align: top;
+}
+.icon-toggle[data-v-0a29fe7d] { --icon-size: 22px; --icon-padding: 12px;
+}
+.dash-icon-wrapper[data-v-0a29fe7d] { padding: 0; vertical-align: top;
+}
+.dash-icon-wrapper[data-v-0a29fe7d]:after { --icon-wrapper-size: 46px;
+}
+.dash-icon[data-v-0a29fe7d] { opacity: 0;
+}
+.dash-icon[data-v-0a29fe7d]:hover { opacity: 1;
+}
+
+	/* Ensure the negative side margin matches the nav-item first/last child padding */
+.nav[data-v-0a29fe7d] { margin: 0 -2px; position: absolute; top: 0; right: 0; background: var(--color-bg); border-radius: 100px;
+}
+.open-to-right .nav[data-v-0a29fe7d] { right: auto; left: 0;
+}
+.open-enter-active[data-v-0a29fe7d], .open-leave-active[data-v-0a29fe7d] { transition: opacity 0.1s ease;
+}
+.open-enter[data-v-0a29fe7d], .open-leave-to[data-v-0a29fe7d] { opacity: 0;
+}
+@media screen and (max-width: 450px) {
+.container[data-v-0a29fe7d] { --icon-size: 22px;
+}
+.icon[data-v-0a29fe7d] { padding-right: 10px;
+}
+}
+</style><style type="text/css">.popup-base[data-v-6e1671ac]{z-index:2;pointer-events:none}.popup-base.popup-pulse[data-v-6e1671ac] .app-shadow::before{content:"";position:absolute;z-index:-1;animation:21.5s popup-pulse-6e1671ac infinite forwards;animation-delay:1s;border-radius:10px;inset:0}@keyframes popup-pulse-6e1671ac{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}7%,100%{box-shadow:0 0 0 1rem rgba(255,255,255,0)}}.popup-base[data-v-6e1671ac] .app-popup{--color-bg: hsl(var(--color-bg-base) / 50%) !important}.popup-base[data-v-6e1671ac] .app{--app-padding: 0px;position:relative;-webkit-backdrop-filter:blur(10px) saturate(200%);backdrop-filter:blur(25px) saturate(200%)}.popup-base .popup-image img[data-v-6e1671ac]{width:100%;object-fit:contain}.popup-base .popup-content[data-v-6e1671ac]{display:flex;flex-direction:column;padding:.9375rem 2.5rem .9375rem .9375rem;gap:.8rem}.popup-base .popup-highlight-bar[data-v-6e1671ac]{height:.25rem;position:absolute;background:var(--color-brand);inset:0 0 auto}.popup-base .popup-highlight-bar[data-v-6e1671ac]::after{content:"";position:absolute;background:linear-gradient(to right, rgba(255, 255, 255, 0.5), transparent);inset:0}.popup-base .popup-header[data-v-6e1671ac]{display:flex;flex-direction:column}.popup-base .popup-close[data-v-6e1671ac]{display:flex;position:absolute;z-index:1;top:0;right:0;align-items:center;justify-content:center;padding:calc(.9375rem + var(--app-padding-top, 0px)) .9375rem .3125rem .3125rem}.popup-base .popup-close .icon[data-v-6e1671ac]{opacity:.4;fill:var(--color-text)}.popup-base .popup-body[data-v-6e1671ac]{margin:-0.1rem 0;font-size:.9375rem;line-height:1.3;text-wrap:pretty}.popup-base .popup-footer[data-v-6e1671ac]{display:flex;align-items:center;gap:.5rem}.popup-base .button-primary[data-v-6e1671ac]{--icon-size: 0.6875rem;display:flex;align-items:center;margin:0;padding:.42rem 1.31rem;font-size:.875rem;line-height:1.0625rem;gap:.31rem}.popup-base .button-text[data-v-6e1671ac]{display:flex;align-items:center;align-self:stretch;opacity:.6;padding:0 10px 1px;background:none;font-size:.8125rem;cursor:pointer}.popup-base .button-text[data-v-6e1671ac]:hover{opacity:.8}.popup-base .button-secondary[data-v-6e1671ac]{display:flex;align-items:center;align-self:stretch;opacity:.7;padding:0 10px;font-size:14px;font-weight:500;cursor:pointer}.popup-base .button-secondary[data-v-6e1671ac]:hover{opacity:.85}.popup-base .button-secondary[data-v-6e1671ac]:hover:active{opacity:.7}.popup-base.notification-popup[data-v-6e1671ac] .app-popup{--color-bg: hsl(var(--color-bg-base)) !important}.popup-base.notification-popup[data-v-6e1671ac] .app{overflow:hidden;box-shadow:0 4px 175px rgba(0,0,0,.85);-webkit-backdrop-filter:none;backdrop-filter:none}.popup-base.notification-popup .popup-image[data-v-6e1671ac]{margin-top:.25rem}.popup-base.notification-popup .popup-title[data-v-6e1671ac]{opacity:.9;color:var(--color-brand);font-size:1rem;font-weight:700}.popup-base.notification-popup .popup-content[data-v-6e1671ac]{padding:1.625rem}.popup-base.notification-popup .popup-body[data-v-6e1671ac]{line-height:1.4}.popup-base.notification-popup .popup-close[data-v-6e1671ac]{padding:.89rem .64rem .64rem}.popup-base.notification-popup .popup-close.dark[data-v-6e1671ac]{filter:drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3))}.popup-base.notification-popup .popup-close .icon[data-v-6e1671ac]{opacity:revert}.popup-base.notification-popup .popup-close:not(.dark) .icon[data-v-6e1671ac]{opacity:.5}.popup-base.notification-popup .popup-footer[data-v-6e1671ac]{margin:.375rem 0 0}.popup-base.notification-popup .popup-footer .button-primary[data-v-6e1671ac]{margin-right:0}</style><style type="text/css" data-vue-ssr-id="1702dea2:0">
+/* stylelint-disable */
+.tour-feature[data-v-c348472a] { max-width: 550px; position: absolute; display: flex; align-items: center;
+}
+.cta[data-v-c348472a] { max-width: 400px; padding: 1rem; flex-grow: 1; display: flex; flex-direction: column;
+}
+.arrow[data-v-c348472a] { padding: 15px; order: 1; font-size: 14px;
+}
+.arrow.right-below[data-v-c348472a] { align-self: flex-end;
+}
+.arrow.right-above[data-v-c348472a] { align-self: flex-start; transform: rotateX(180deg);
+}
+.arrow.below-left[data-v-c348472a] { align-self: flex-start; transform: rotate(90deg);
+}
+.arrow.below-right[data-v-c348472a] { align-self: flex-end; transform: rotateY(180deg) rotate(90deg);
+}
+.arrow.left-above[data-v-c348472a] { order: -1; align-self: flex-start; transform: rotate(180deg);
+}
+.arrow.left-below[data-v-c348472a] { order: -1; align-self: flex-end; transform: rotateX(180deg) rotate(180deg);
+}
+.arrow.above-right[data-v-c348472a] { order: -1; align-self: flex-end; transform: rotate(-90deg);
+}
+.arrow.above-left[data-v-c348472a] { order: -1; align-self: flex-start; transform: rotateY(180deg) rotate(-90deg);
+}
+.icon-arrow[data-v-c348472a] { height: 60px; width: 60px;
+}
+.sub-step-transition-enter-active .feature[data-v-c348472a], .sub-step-transition-leave-active .feature[data-v-c348472a] { transition: opacity 0.5s ease;
+}
+.sub-step-transition-enter .feature[data-v-c348472a], .sub-step-transition-leave-to .feature[data-v-c348472a] { opacity: 0;
+}
+</style><style type="text/css" data-vue-ssr-id="5d0d5372:0">
+/* stylelint-disable */
+.modal-component[data-v-b260a36e] { --modal-padding: 40px;
+}
+.fade-slide-down-enter-active[data-v-b260a36e], .fade-slide-down-leave-active[data-v-b260a36e] { transition: all 0.5s ease-out;
+}
+.fade-slide-down-enter[data-v-b260a36e], .fade-slide-down-leave-to[data-v-b260a36e] { opacity: 0; transform: translateY(0px);
+}
+.fade-slide-up-enter-active[data-v-b260a36e], .fade-slide-up-leave-active[data-v-b260a36e] { transition: all 0.5s ease-out;
+}
+.fade-slide-up-enter[data-v-b260a36e], .fade-slide-up-leave-to[data-v-b260a36e] { opacity: 0; transform: translateY(0px);
+}
+.fade-slide-down-full-enter-active[data-v-b260a36e],
+.fade-slide-down-full-leave-active[data-v-b260a36e],
+.fade-slide-up-full-enter-active[data-v-b260a36e],
+.fade-slide-up-full-leave-active[data-v-b260a36e] {
+	transition: transform 0.5s cubic-bezier(.25, 1.31, .64, 1);
+}
+.fade-slide-down-full-enter-active[data-v-b260a36e] :is(.app, .app-shadow),
+.fade-slide-down-full-leave-active[data-v-b260a36e] :is(.app, .app-shadow),
+.fade-slide-up-full-enter-active[data-v-b260a36e] :is(.app, .app-shadow),
+.fade-slide-up-full-leave-active[data-v-b260a36e] :is(.app, .app-shadow) {
+	transition: opacity 0.5s ease;
+}
+.fade-slide-down-full-enter[data-v-b260a36e],
+.fade-slide-down-full-leave-to[data-v-b260a36e] {
+	transform: translateY(-100%); pointer-events: none;
+}
+.fade-slide-down-full-enter[data-v-b260a36e] :is(.app, .app-shadow),
+.fade-slide-down-full-leave-to[data-v-b260a36e] :is(.app, .app-shadow) {
+	opacity: 0;
+}
+.fade-slide-up-full-enter[data-v-b260a36e],
+.fade-slide-up-full-leave-to[data-v-b260a36e] {
+	transform: translateY(100%); pointer-events: none;
+}
+.fade-slide-up-full-enter[data-v-b260a36e] :is(.app, .app-shadow),
+.fade-slide-up-full-leave-to[data-v-b260a36e] :is(.app, .app-shadow) {
+	opacity: 0;
+}
+[data-v-b260a36e] .opt-out { margin-bottom: 0px; opacity: 0.45; font-size: 0.8125rem; line-height: 1.4;
+}
+[data-v-b260a36e] .opt-out-button { margin-left: -3px; padding: 3px; cursor: pointer; text-decoration: underline; white-space: nowrap;
+}
+[data-v-b260a36e] .opt-out-button:hover { opacity: 0.75;
+}
+</style><style type="text/css">.checkbox[data-v-a082d23a]{min-width:30px;min-height:30px;position:relative;border:none;line-height:1}.checkbox[data-v-a082d23a]:hover,.touch .checkbox[data-v-a082d23a]{opacity:1}.icon-checkbox-check[data-v-a082d23a],.icon-checkbox-border[data-v-a082d23a]{position:absolute;margin:auto;inset:0}.icon-checkbox-border[data-v-a082d23a]{width:30px;height:30px;border:3px solid #fff;border-radius:5px;background:rgba(255 255 255/var(--opacity-stop-2));box-shadow:0 0 25px rgba(0 0 0/var(--opacity-stop-3))}.icon-checkbox-check[data-v-a082d23a]{--color-icon: white;width:16px;height:16px}</style><style type="text/css" data-vue-ssr-id="51d848a2:0">
+/* stylelint-disable */
+.focus .focus-title[data-v-4c7eac53] { margin: 17px 0 3px; font-size: 70%; line-height: 120%; text-transform: uppercase;
+}
+.focus-content[data-v-4c7eac53] { width: 100%; font-size: 1.875em;
+}
+.focus-row[data-v-4c7eac53] { font-size: 2.25rem;
+}
+.center .focus-row[data-v-4c7eac53] { max-width: inherit; font-size: var(--font-size-greeting);
+}
+.focus-row[data-v-4c7eac53] .three-col-layout--center { display: inline-block;
+}
+.todays-focus[data-v-4c7eac53] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.complete .todays-focus[data-v-4c7eac53] { opacity: 0.85; text-decoration: line-through;
+}
+.control[data-v-4c7eac53] { opacity: 0; cursor: pointer;
+}
+.focus-wrapper:hover .control[data-v-4c7eac53] { opacity: 0.8;
+}
+.complete .control[data-v-4c7eac53] { opacity: 1 !important;
+}
+
+			/* set a transition for the checking off */
+.focus-row[data-v-4c7eac53] .three-col-layout--left { display: flex; align-items: center;
+}
+.checkbox[data-v-4c7eac53] { margin: 0.6rem 0.8rem 0;
+}
+.focus-row[data-v-4c7eac53] .three-col-layout--right {
+}
+[data-v-4c7eac53] .more {
+}
+.focus-row[data-v-4c7eac53] .more-toggle { --icon-size: 15px; margin: 0.5rem 0.8rem 0; position: relative;
+}
+.focus-row[data-v-4c7eac53] .icon-wrapper .icon-toggle { --icon-padding: 10px;
+}
+.focus-row[data-v-4c7eac53] .right .icon-wrapper:after { --icon-wrapper-size: 30px;
+}
+.focus-dropdown[data-v-4c7eac53] {
+}
+.focus-dropdown[data-v-4c7eac53] .dropdown { margin-top: 4px; left: 8px;
+}
+.focus-dropdown .icon-new[data-v-4c7eac53] { height: 9px; transform: rotate(45deg);
+}
+.focus-dropdown .icon-delete[data-v-4c7eac53] { height: 10px; margin-top: 1px;
+}
+.focus-dropdown .icon-pomodoro[data-v-4c7eac53] { height: 15px;
+}
+.focus-dropdown .icon-autofocus[data-v-4c7eac53] { height: 9px;
+}
+.focus-dropdown.shift-to-left[data-v-4c7eac53] .more-dropdown { right: -8px; left: auto;
+}
+.focus-dropdown.shift-to-left[data-v-4c7eac53] .more-dropdown.nipple-top-left:after { right: 14px; left: auto;
+}
+
+
+/* Focus on dash (pomodoro has element between wrapper and focus) */
+.focus-inner-wrapper > .focus .control.checkbox[data-v-4c7eac53] .icon-checkbox-border {
+	width: 28px;
+	height: 28px;
+	margin-bottom: 3px;
+}
+.focus-inner-wrapper > .focus .control.checkbox[data-v-4c7eac53] .icon-checkbox-check {
+	padding-bottom: 3px;
+}
+
+/* Touch */
+[data-v-4c7eac53] .touch >>> .right { flex-basis: 25px;
+} /* Centers the checkbox/focus over on touch */
+
+
+/* Mobile */
+@media screen and (max-width: 450px) {
+.focus-title[data-v-4c7eac53] { margin: 2px 0 4px !important; font-size: 17px !important;
+}
+.focus-row[data-v-4c7eac53] { font-size: 26px; display: flex; align-items: center;
+}
+.left[data-v-4c7eac53] {
+}
+.checkbox[data-v-4c7eac53] { margin: 0 9px 0 0 !important; font-size: 76.9%;
+}
+.three-col-layout--center[data-v-4c7eac53] {
+}
+.todays-focus[data-v-4c7eac53] { margin: 0; /* display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; text-align: left; white-space: unset; <-- 2 line ellipses overflow to explore sometime */
+}
+.focus-wrapper .focus .control.checkbox[data-v-4c7eac53] .icon-checkbox-border {
+		width: 22px;
+		height: 22px;
+		border-radius: 23px;
+		border-width: 2px;
+}
+.focus-wrapper .focus .control.checkbox[data-v-4c7eac53] .icon-checkbox-check {
+		width: 13px;
+		height: 13px;
+		padding-top: 2px;
+		padding-bottom: 0;
+}
+}
+</style></head>
+<body class="f--default Chrome dark dark-full">
+<div class="overlay loading-overlay">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="loading-logo" data-test="loading-logo" style="display: none;" fill="#ccc">
+<path d="M256 0C114.615 0 0 114.615 0 256s114.615 256 256 256 256-114.615 256-256S397.385 0 256 0zm122.763 344.309h-15.484v-95.746c0-34.76-18.012-54.983-47.715-54.983-27.176 0-50.875 20.856-50.875 56.879v93.85h-15.484v-96.695c0-33.5-18.327-54.035-47.083-54.035s-51.507 25.28-51.507 57.827v92.9h-15.483V183.151h15.483v28.756c10.428-16.748 24.964-32.548 53.719-32.548 28.124 0 45.5 16.116 54.352 34.76 10.428-18.012 27.807-34.76 58.143-34.76 38.235 0 61.935 26.86 61.935 67.307z"></path>
+</svg>
+</div>
+<div id="main-view" style="visibility: visible;">
+<div data-v-5f354283="" class="backgrounds" style="--14ae2ceb: var(--a-show-full-duration); --72fb97fc: 1; --71e9d014: undefined; --31f71d8f: 0;"><div data-v-5f354283="" class="background"><div data-v-5f354283="" data-test="background-item" class="background-item" style="background-image: url(&quot;https://farm9.staticflickr.com/8441/28616172163_b4ab4459f1_k.jpg?momo_cache_bg_uuid=73fc8f85-420b-4e8a-9f3b-5b15bd3d48c4&quot;);"></div></div> <div data-v-5f354283="" class="background-overlay"></div></div>
+<div data-v-3b81d88a="" class="dashboard apps" style="--f9b3960e: 0px; --362319b4: 79px; --02c8a359: 192.5px;"><div data-v-3b81d88a="" class="region full"><div data-v-b260a36e="" data-test="modal-container" class="modal-container"><!----> <span data-v-b260a36e=""></span></div></div> <div data-v-3b81d88a="" class="top-row"><div data-v-3b81d88a="" class="region top-bar" data-resize-sensor-id="qd7qq"></div> <div data-v-3b81d88a="" data-test="top-left" class="region top-left" data-resize-sensor-id="58z84"><div data-v-25d7bdb8="" data-show-anyway="links" class="app-container links" data-test="links" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="ky97nq" data-click-outside-mousedown-handler-id="7lqg9q"><div data-v-fe15987a="" data-v-25d7bdb8="" data-test="app-dash" class="app-dash toggle add-shadow app-dash-icon"><div data-v-2b5cce9a="" data-v-fe15987a="" class="base-icon" style="--b689c742: 24px;"><svg data-v-2b5cce9a="" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M33 15.658a2.5 2.5 0 0 0-2.5-2.5H15a8 8 0 0 0-8 8v28a8 8 0 0 0 8 8h28a8 8 0 0 0 8-8V33.5a2.5 2.5 0 0 0-5 0v15.658a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3v-28a3 3 0 0 1 3-3h15.5a2.5 2.5 0 0 0 2.5-2.5Z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M42.68 7.657a2.5 2.5 0 0 1 2.5-2.5h11.315a2.496 2.496 0 0 1 2.5 2.5V18.97a2.5 2.5 0 1 1-5 0v-5.277l-13.41 13.41a2.5 2.5 0 1 1-3.536-3.536l13.41-13.41h-5.278a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg></div> <span data-v-fe15987a="" class="app-dash-icon-label u--mobile-hide">
+		Links
+	</span> </div> <!----> <!----></div><!----><div data-v-deaa131a="" data-show-anyway="focus-mode" class="app-container focus-mode" data-test="focus-mode"><!----> <div data-v-deaa131a="" class="click-target" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="g842be" data-click-outside-mousedown-handler-id="tib9c8"><!----> <div data-v-deaa131a="" class="icon-container"><div data-v-fe15987a="" data-v-deaa131a="" data-test="focus-mode-top-left-app-toggle" class="app-dash toggle add-shadow app-dash-icon"><div data-v-2b5cce9a="" data-v-fe15987a="" class="base-icon" style="--b689c742: 24px;"><svg data-v-2b5cce9a="" viewBox="0 0 25 24" xmlns="http://www.w3.org/2000/svg"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M19.7401 9.34098C19.7381 9.3325 19.7354 9.32043 19.7322 9.30425C19.7194 9.23915 19.7057 9.14728 19.6893 9.01711C19.6799 8.94246 19.6696 8.85375 19.6581 8.75519C19.633 8.54036 19.6025 8.27875 19.5645 8.01403C19.45 7.21594 19.2426 6.18013 18.7486 5.16214C18.2486 4.13185 17.4547 3.11974 16.186 2.39051C14.9236 1.66488 13.2606 1.25927 11.0847 1.31813C8.89622 1.37732 7.17849 1.91327 5.86785 2.79668C4.55488 3.68166 3.71077 4.87486 3.20669 6.14656C2.21511 8.64813 2.51883 11.4898 3.11183 13.1964C3.67742 14.8241 4.47458 15.7139 5.03887 16.3438C5.07897 16.3886 5.11789 16.432 5.15547 16.4743C5.44317 16.7982 5.57799 16.9775 5.64868 17.1458C5.70162 17.2719 5.74087 17.4464 5.66747 17.7858C5.30601 19.4576 5.21523 21.1058 5.21523 21.75C5.21523 22.2678 5.63496 22.6875 6.15273 22.6875H11.5498C12.2254 22.6875 12.8019 22.4863 13.2142 22.0402C13.5893 21.6343 13.7143 21.1405 13.7777 20.83C13.7975 20.7329 13.8188 20.6103 13.8353 20.5154C13.8375 20.5027 13.8396 20.4906 13.8416 20.479C13.8712 20.4799 13.9016 20.4808 13.9328 20.4817C14.5525 20.4997 15.4758 20.5266 16.3164 20.3982C17.4021 20.2324 18.7617 19.7541 19.3131 18.3206C19.6883 17.3453 19.8725 16.5037 19.9599 15.9286C20.351 15.8351 20.7394 15.7351 21.0501 15.6164C21.3001 15.5208 21.5987 15.3791 21.8438 15.1467C22.1191 14.8858 22.3125 14.5213 22.3125 14.0746C22.3125 13.8913 22.2634 13.7368 22.2406 13.669C22.2109 13.5803 22.1739 13.4927 22.1379 13.4141C22.0654 13.2559 21.9692 13.0741 21.8646 12.8866C21.6538 12.5089 21.3731 12.0454 21.0882 11.5821C20.9684 11.3873 20.8493 11.1946 20.7339 11.0079C20.2906 10.291 19.902 9.66228 19.7401 9.34098ZM13.9004 20.2108C13.9004 20.2108 13.9001 20.2116 13.8995 20.213C13.9001 20.2115 13.9004 20.2107 13.9004 20.2108ZM15.2517 4.01612C14.3566 3.50166 13.0545 3.14054 11.1353 3.19245C9.22865 3.24402 7.87502 3.70495 6.91582 4.35147C5.95896 4.99643 5.33474 5.86621 4.94975 6.83748C4.16317 8.82187 4.39829 11.1861 4.88296 12.581C5.32361 13.8491 5.9085 14.5033 6.44417 15.1023C6.48214 15.1448 6.51987 15.187 6.55728 15.2291C6.83535 15.5422 7.17201 15.9306 7.37747 16.4199C7.60068 16.9515 7.64226 17.5247 7.50012 18.1821C7.29233 19.1432 7.18335 20.1019 7.13136 20.8125H11.5498C11.7046 20.8125 11.7836 20.7903 11.8146 20.7785C11.8297 20.7727 11.8359 20.7686 11.8366 20.7681C11.8369 20.7679 11.837 20.7678 11.8371 20.7678C11.8371 20.7677 11.8371 20.7677 11.8373 20.7675C11.8461 20.758 11.8909 20.698 11.9406 20.4547C11.9564 20.3774 11.9665 20.3182 11.9784 20.2486C11.9872 20.1971 11.997 20.1398 12.0108 20.0652C12.0365 19.9262 12.0753 19.7354 12.1463 19.5482C12.2182 19.3589 12.3476 19.1055 12.5974 18.9024C12.8647 18.6851 13.1805 18.5972 13.4896 18.5972C13.6915 18.5972 13.9031 18.6031 14.1217 18.6092C14.724 18.6261 15.3799 18.6445 16.0333 18.5447C16.916 18.4099 17.3841 18.1128 17.5632 17.6474C17.8328 16.9465 17.9828 16.3364 18.0651 15.8908C18.1062 15.6682 18.1301 15.488 18.1436 15.3597C18.1552 15.2489 18.158 15.1865 18.1587 15.1721C18.1588 15.1688 18.1589 15.168 18.1589 15.1697C18.1589 14.7372 18.4548 14.3608 18.8751 14.2587C19.0429 14.218 19.1974 14.1815 19.3398 14.1479C19.7371 14.0542 20.0412 13.9824 20.2824 13.9003C20.2652 13.8686 20.2468 13.8353 20.2273 13.8004C20.0378 13.4608 19.7758 13.0274 19.491 12.5642C19.3891 12.3985 19.2829 12.2269 19.1759 12.054C18.7123 11.3049 18.2347 10.5332 18.0378 10.1284C17.9565 9.96121 17.9162 9.78617 17.8928 9.66778C17.8668 9.53605 17.8466 9.39122 17.8289 9.25112C17.8156 9.1453 17.8035 9.04045 17.791 8.93295C17.7677 8.73246 17.7433 8.52276 17.7086 8.28039C17.6054 7.56148 17.4327 6.74538 17.0617 5.9807C16.6966 5.22831 16.1405 4.52698 15.2517 4.01612ZM13.3438 4.94054C13.7922 5.19942 13.9458 5.77279 13.6869 6.22118L13.3119 6.8707C13.0531 7.3191 12.4797 7.47274 12.0313 7.21385C11.5829 6.95497 11.4293 6.3816 11.6881 5.9332L12.0631 5.28368C12.322 4.83529 12.8954 4.68165 13.3438 4.94054ZM8.65629 4.94061C9.10469 4.68173 9.67805 4.83536 9.93694 5.28376L10.3119 5.93328C10.5708 6.38168 10.4172 6.95504 9.96879 7.21393C9.52039 7.47281 8.94702 7.31918 8.68814 6.87078L8.31314 6.22126C8.05425 5.77286 8.20789 5.19949 8.65629 4.94061ZM6.31254 9.00007C6.31254 8.4823 6.73227 8.06257 7.25004 8.06257H8.00004C8.5178 8.06257 8.93754 8.4823 8.93754 9.00007C8.93754 9.51783 8.5178 9.93757 8.00004 9.93757H7.25004C6.73227 9.93757 6.31254 9.51783 6.31254 9.00007ZM13.0625 9.00007C13.0625 8.4823 13.4823 8.06257 14 8.06257H14.75C15.2678 8.06257 15.6875 8.4823 15.6875 9.00007C15.6875 9.51783 15.2678 9.93757 14.75 9.93757H14C13.4823 9.93757 13.0625 9.51783 13.0625 9.00007ZM9.96879 10.7862C10.4172 11.0451 10.5708 11.6185 10.3119 12.0669L9.93694 12.7164C9.67805 13.1648 9.10469 13.3184 8.65629 13.0595C8.20789 12.8006 8.05425 12.2273 8.31314 11.7789L8.68814 11.1294C8.94702 10.681 9.52039 10.5273 9.96879 10.7862ZM12.0313 10.7863C12.4797 10.5274 13.0531 10.681 13.3119 11.1294L13.6869 11.7789C13.9458 12.2273 13.7922 12.8007 13.3438 13.0596C12.8954 13.3185 12.322 13.1648 12.0631 12.7164L11.6881 12.0669C11.4293 11.6185 11.5829 11.0452 12.0313 10.7863Z"></path></svg></div> <span data-v-fe15987a="" class="app-dash-icon-label u--mobile-hide">
+		Focus
+	</span> </div> <!----> <!----></div></div> <!----></div><div id="dashlinks" class="dashlinks">
+</div><div data-v-4e7789dd="" id="search" data-test="search" class="app-dash app-container search"><div data-v-25ac81a2="" data-v-4e7789dd="" class="search-form"><div data-v-25ac81a2="" class="search-underline"></div> <div data-v-25ac81a2="" class="search-icon-container"><svg data-v-25ac81a2="" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg" data-test="icon-search" class="icon dash-icon icon-search"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M27.375 4C14.465 4 4 14.465 4 27.375c0 12.909 10.465 23.374 23.375 23.374a23.27 23.27 0 0 0 11.227-2.868c.824-.452 1.858-.349 2.523.316L51.46 58.532a5 5 0 0 0 7.07-7.071L48.198 41.127c-.665-.665-.769-1.7-.317-2.524a23.27 23.27 0 0 0 2.869-11.229C50.749 14.466 40.284 4 27.374 4ZM12 27.375C12 18.883 18.883 12 27.375 12c8.49 0 15.374 6.883 15.374 15.375 0 8.49-6.883 15.374-15.375 15.374-8.49 0-15.374-6.883-15.374-15.375Z"></path></svg></div> <input data-v-25ac81a2="" id="search-input" search-url="https://www.google.com/search?q=" type="text" autocomplete="off" data-test="search-input" placeholder="" class="search-input"> <div data-v-25ac81a2="" class="right-wrapper"><!----> <div data-v-2e98129d="" data-v-25ac81a2="" data-test="more-container" class="more more source more-dash" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="w1ssss" data-click-outside-mousedown-handler-id="x17off" section-title="Search with"><div data-v-25ac81a2="" data-v-2e98129d="" tabindex="0" data-test="provider-toggle" class="source-toggle"><div data-v-25ac81a2="" data-v-2e98129d="" class="source-selected"><img data-v-25ac81a2="" data-v-2e98129d="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik00NC41IDIwSDI0djguNWgxMS44QzM0LjcgMzMuOSAzMC4xIDM3IDI0IDM3Yy03LjIgMC0xMy01LjgtMTMtMTNzNS44LTEzIDEzLTEzYzMuMSAwIDUuOSAxLjEgOC4xIDIuOWw2LjQtNi40QzM0LjYgNC4xIDI5LjYgMiAyNCAyIDExLjggMiAyIDExLjggMiAyNHM5LjggMjIgMjIgMjJjMTEgMCAyMS04IDIxLTIyIDAtMS4zLS4yLTIuNy0uNS00eiIvPjwvc3ZnPg==" class="icon-google icon icon-source active"></div> <svg data-v-25ac81a2="" fill="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon icon-dropdown"><path xmlns="http://www.w3.org/2000/svg" d="M16.6 8.6L12 13.2 7.4 8.6 6 10l6 6 6-6z"></path></svg></div> <!----></div></div></div></div><!----></div> <div data-v-3b81d88a="" class="region top-right"><div data-v-4dc7dbde="" data-show-anyway="weather" class="app-container weather" data-test="weather" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="xc31f" data-click-outside-mousedown-handler-id="y6lj0i"><div data-v-fe15987a="" data-v-4dc7dbde="" data-test="app-dash" class="metric-item app-dash toggle add-shadow"><!----> <!----> <div data-v-4dc7dbde="" data-v-fe15987a="" class="metric-stat"><div data-v-4dc7dbde="" data-v-fe15987a="" class="current-icon"><svg data-v-4dc7dbde="" height="512" width="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="icon"><path xmlns="http://www.w3.org/2000/svg" class="cloud" d="M512 240.001c0-49.167-40-89.146-89.167-89.146-2.396 0-4.771.104-7.146.291-23.125-28.854-57.979-45.978-95.688-45.978-37.688 0-72.562 17.124-95.688 45.979a91.045 91.045 0 0 0-7.188-.291C168 150.855 128 190.834 128 240.001c0 5.146.688 10.104 1.5 15.042-.542.708-1.188 1.354-1.708 2.083A110.94 110.94 0 0 0 112 256.001C50.25 256.001 0 306.25 0 368c0 61.751 50.25 112 112 112 13.688 0 27.084-2.5 39.709-7.333C180.666 497.917 217.5 512 256 512c38.542 0 75.333-14.083 104.291-39.333A110.825 110.825 0 0 0 400 480c61.75 0 112-50.249 112-112 0-25.688-9.042-49.083-23.666-67.999 14.582-15.896 23.666-36.833 23.666-60zM400 448c-17.125 0-32.916-5.499-45.938-14.666C330.583 461.625 295.624 480 256 480c-39.625 0-74.584-18.375-98.062-46.666C144.938 442.501 129.126 448 112 448c-44.188 0-80-35.812-80-80s35.812-79.999 80-79.999c10.812 0 21.062 2.188 30.438 6.062.562-1.062 1.25-2 1.812-3.021A129.694 129.694 0 0 1 164.916 263C188 239.084 220.083 224 256 224c49.709 0 92.334 28.666 113.541 70.062 5.646-2.312 11.668-3.813 17.875-4.812L400 288c12.334 0 23.875 3.042 34.312 8 11.312 5.416 21.021 13.374 28.646 23.188C473.458 332.709 480 349.542 480 368c0 44.188-35.812 80-80 80zm65.562-170.375c-18.479-13.458-41-21.624-65.562-21.624-5.312 0-10.562.375-15.792 1.125-29.874-40.708-77.021-65.125-128.208-65.125-34.125 0-66.312 11.042-92.938 30.334 7.479-22.854 28.729-39.479 54.062-39.479 7.75 0 15.062 1.562 21.75 4.332 15.188-29.562 45.625-50.02 81.125-50.02s65.958 20.457 81.084 50.02c6.729-2.77 14.083-4.332 21.749-4.332 31.584 0 57.167 25.583 57.167 57.146.001 14.478-5.561 27.54-14.437 37.623z"></path></svg></div> <div data-v-4dc7dbde="" data-v-fe15987a="" data-test="temperature" class="current-temp">
+				21°
+			</div></div> <div data-v-4dc7dbde="" data-v-fe15987a="" class="metric-label"><span data-v-4dc7dbde="" data-v-fe15987a="" data-test="location" class="metric-label-name">Mirzāpur</span></div></div> <!----> <!----></div><div data-v-de31ca60="" class="app-container add-metric needs-hover" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="dcpiw" data-click-outside-mousedown-handler-id="lkcfp"><div data-v-de31ca60="" data-ob="add-metric" data-test="add-metric-dash" class="app-dash metric-item add-shadow"><div data-v-de31ca60="" class="metric-stat"><span data-v-de31ca60="" class="placeholder"><span data-v-de31ca60="" class="hide">a</span> <svg data-v-de31ca60="" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="icon icon-add"><path xmlns="http://www.w3.org/2000/svg" d="M19 32C19 30.3431 20.3431 29 22 29H29V22C29 20.3431 30.3431 19 32 19C33.6569 19 35 20.3431 35 22V29H42C43.6569 29 45 30.3431 45 32C45 33.6569 43.6569 35 42 35H35V42C35 43.6569 33.6569 45 32 45C30.3431 45 29 43.6569 29 42V35H22C20.3431 35 19 33.6569 19 32Z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M32 64C49.6731 64 64 49.6731 64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64ZM32 58C46.3594 58 58 46.3594 58 32C58 17.6406 46.3594 6 32 6C17.6406 6 6 17.6406 6 32C6 46.3594 17.6406 58 32 58Z"></path></svg></span></div> <div data-v-de31ca60="" class="metric-label"><span data-v-de31ca60="" class="metric-label-name">Add</span></div></div> <!----></div></div><div data-v-a16b3076="" class="flash-message-container"><!----></div></div> <div data-v-3b81d88a="" class="region sidebar-left" data-resize-sensor-id="2ye89"><!----></div> <div data-v-3b81d88a="" class="region center-above"></div> <div data-v-3b81d88a="" class="center-measure" data-resize-sensor-id="zq2yqc"></div> <div data-test="region-center" class="region center"><!----> <div data-test="clock-greeting-mantra" class="center-container"><div data-v-256e142c="" data-smooth-reflow-id="4milrj" data-test="smooth-reflow" class="smooth-reflow tr-height" style="height: 168px; --3872912c: 500ms; --7b63f4cb: 500ms;"><div data-v-256e142c="" data-resize-sensor-id="wg1f9m"><div data-v-0b972818="" data-v-34d6a5e6="" data-v-256e142c="" class="three-col-layout app-container clock center-clock has-dash-icon" data-show-anyway="clock" data-test="center-clock" style="--15a6c1ae: 80px; --6863c08e: auto;"><div data-v-0b972818="" class="three-col-layout--left" data-resize-sensor-id="ndpni"><div data-v-0a29fe7d="" data-v-34d6a5e6="" data-test="center-nav" class="container" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="8yyfca" data-click-outside-mousedown-handler-id="otz7lp"><div data-v-0a29fe7d="" data-test="open-center-nav" data-ob="center-nav" class="icon-wrapper dash-icon-wrapper"><svg data-v-0a29fe7d="" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="dash-icon icon icon-toggle"><path xmlns="http://www.w3.org/2000/svg" d="M3.879 13.879A3 3 0 108.12 18.12L3.88 13.88zM18.12 8.12A3 3 0 1013.88 3.88L18.12 8.12zm-10 5.758A3 3 0 103.88 18.12L8.12 13.88zM13.88 28.12a3 3 0 104.242-4.242L13.88 28.12zM53 27a3 3 0 106 0h-6zm3-11h3a3 3 0 00-3-3v3zM6 13a3 3 0 100 6v-6zm2.121 5.121l10-10L13.88 3.88l-10 10L8.12 18.12zm-4.242 0l10 10 4.242-4.242-10-10L3.88 18.12zM59 27V16h-6v11h6zm-3-14H6v6h50v-6zM60.121 50.121a3 3 0 10-4.242-4.242l4.242 4.242zM45.88 55.88a3 3 0 104.242 4.242L45.88 55.88zm10-5.758a3 3 0 104.242-4.242L55.88 50.12zM50.12 35.88a3 3 0 10-4.242 4.242l4.242-4.242zM11 37a3 3 0 10-6 0h6zM8 48H5a3 3 0 003 3v-3zm50 3a3 3 0 100-6v6zm-2.121-5.121l-10 10 4.242 4.242 10-10-4.242-4.242zm4.242 0l-10-10-4.242 4.242 10 10 4.242-4.242zM5 37v11h6V37H5zm3 14h50v-6H8v6z"></path></svg></div> <!----></div></div> <div data-v-0b972818="" class="three-col-layout--center"><div data-v-256e142c="" data-v-34d6a5e6="" data-smooth-reflow-id="hc0spt" data-test="smooth-reflow" class="smooth-reflow clocks-reflow tr-width" data-v-0b972818="" style="height: auto; width: 395px; --3872912c: 100ms; --7b63f4cb: 1000ms;"><div data-v-256e142c="" data-resize-sensor-id="cqdn7l"><div data-v-34d6a5e6="" data-v-256e142c=""><span data-v-34d6a5e6="" data-test="default-clock" class="default-clock"><div data-test="default-clock-time" class="time">09:32</div></span></div></div></div></div> <div data-v-0b972818="" class="three-col-layout--right" data-resize-sensor-id="b0fkwf"><div data-v-2e98129d="" data-v-34d6a5e6="" data-test="more-container" class="more more-dash" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="ommbtt" data-click-outside-mousedown-handler-id="igr2ff" section-title="Clock Settings" data-v-0b972818=""><div data-v-2e98129d="" data-test="more-toggle" data-ob="" class="icon-wrapper more-toggle dash-icon-wrapper u--touch-hide"><svg data-v-2e98129d="" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="icon icon-ellipsis more-icon dash-icon"><path xmlns="http://www.w3.org/2000/svg" d="M8 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM52 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM30 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8z"></path></svg></div> <!----></div></div></div></div></div> <div data-v-256e142c="" data-smooth-reflow-id="pde49" data-test="smooth-reflow" class="smooth-reflow tr-height" style="height: 62px; --3872912c: 500ms; --7b63f4cb: 500ms;"><div data-v-256e142c="" data-resize-sensor-id="5zuiy8"><div data-v-256e142c=""><div data-v-0b972818="" class="three-col-layout app-container has-dash-icon greeting" data-show-anyway="greeting" data-test="greeting" style="--15a6c1ae: 40px; --6863c08e: auto;"><div data-v-0b972818="" class="three-col-layout--left" data-resize-sensor-id="tnb3h"></div> <div data-v-0b972818="" class="three-col-layout--center"><span data-v-da9c11e0="" data-test="content" class="content" data-v-0b972818=""><span data-v-da9c11e0="" data-test="message" class="message">Good morning, </span><span data-v-da9c11e0="" class="name-punctuation-no-wrap"><span data-v-da9c11e0="" data-test="name-wrapper" class="name-wrapper"><span data-v-da9c11e0="" data-test="name" class="name">abdullah</span></span><span data-v-da9c11e0="" data-test="punctuation">.</span></span></span></div> <div data-v-0b972818="" class="three-col-layout--right" data-resize-sensor-id="zayrzp"><div data-v-2e98129d="" data-test="more-container" class="more more-dash" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="2bq6ng" data-click-outside-mousedown-handler-id="33lfc9" section-title="Greeting Actions" data-v-0b972818=""><div data-v-2e98129d="" data-test="more-toggle" data-ob="" class="icon-wrapper more-toggle dash-icon-wrapper u--touch-hide"><svg data-v-2e98129d="" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="icon icon-ellipsis more-icon dash-icon"><path xmlns="http://www.w3.org/2000/svg" d="M8 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM52 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM30 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8z"></path></svg></div> <!----></div></div></div></div></div></div></div></div> <div data-v-31fef31c="" data-test="region-center-below" class="center-below"><div data-v-64b01f1b="" data-v-31fef31c="" data-test="focus" data-show-anyway="focus" class="focuses app-container" style="--25586edc: 1;"><div data-v-64b01f1b="" data-ob="focus-dash" class="focus-wrapper has-dash-icon clock-view"><div data-v-64b01f1b="" class="focus-inner-wrapper" style="opacity: 0; pointer-events: none; visibility: hidden;"><div data-v-64b01f1b="" class="focus"><div data-v-4c7eac53="" data-v-64b01f1b="" class="focus-content"><h3 data-v-4c7eac53="" class="focus-title">Today</h3> <div data-v-0b972818="" data-v-4c7eac53="" class="three-col-layout focus-row" style="--15a6c1ae: 56px; --6863c08e: auto;"><div data-v-0b972818="" class="three-col-layout--left" data-resize-sensor-id="opv4he"> <div data-v-a082d23a="" data-v-4c7eac53="" data-test="complete" class="control checkbox" data-v-0b972818=""><span data-v-a082d23a="" class="icon-checkbox-border"></span> <!----></div></div> <div data-v-0b972818="" class="three-col-layout--center"><div data-v-4c7eac53="" data-v-0b972818="" data-test="focus-active" class="todays-focus"></div></div> <div data-v-0b972818="" class="three-col-layout--right" data-resize-sensor-id="47274"><div data-v-2e98129d="" data-v-4c7eac53="" data-test="dropdown" class="more focus-dropdown more-dash" data-just-bound-click-outside-handler="false" data-click-outside-mouseup-handler-id="p4irj8" data-click-outside-mousedown-handler-id="74cxzx" section-title="Focus Actions" data-v-0b972818=""><div data-v-2e98129d="" data-test="more-toggle" data-ob="" class="icon-wrapper more-toggle dash-icon-wrapper u--touch-hide"><svg data-v-2e98129d="" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="icon icon-ellipsis more-icon dash-icon"><path xmlns="http://www.w3.org/2000/svg" d="M8 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM52 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zM30 22c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8z"></path></svg></div> <!----></div></div></div></div></div></div> <div data-v-0b972818="" data-v-64b01f1b="" class="three-col-layout focus-prompt-wrapper" style="opacity: 1; visibility: visible; --15a6c1ae: 0px; --6863c08e: auto;"><div data-v-0b972818="" class="three-col-layout--left" data-resize-sensor-id="ivbve3"></div> <div data-v-0b972818="" class="three-col-layout--center"><div data-v-64b01f1b="" data-v-0b972818="" class="prompt"><h3 data-v-64b01f1b="" data-v-0b972818="" class="focus-question">What is your main goal for today?</h3> <span data-v-64b01f1b="" data-v-0b972818="" class="hidden-data"></span> <input data-v-64b01f1b="" data-v-0b972818="" type="text" data-test="focus-input" autocomplete="off" class="focus-input"></div></div> <div data-v-0b972818="" class="three-col-layout--right" data-resize-sensor-id="ckel2u"></div></div></div> <!----> <div data-v-64b01f1b="" class="font-sizer"></div></div> <div data-v-256e142c="" data-v-31fef31c="" data-smooth-reflow-id="wwbxn6" data-test="smooth-reflow" class="smooth-reflow launchpad-container tr-height" style="height: 0px; --3872912c: 500ms; --7b63f4cb: 500ms;"><div data-v-256e142c="" data-resize-sensor-id="wdq8bs"><!----></div></div></div> <div data-v-3b81d88a="" class="region sidebar-right" data-resize-sensor-id="ftasj4"></div> <div data-v-0b972818="" data-v-3b81d88a="" class="three-col-layout bottom-row grow-center align-sides-outside" style="--15a6c1ae: 185px; --6863c08e: auto;"><div data-v-0b972818="" class="three-col-layout--left" data-resize-sensor-id="yczvrb"><div data-v-3b81d88a="" data-v-0b972818="" class="region bottom-left"><div id="settings" class="app-container settings" data-test="settings" data-justboundclickoutsidehandler="false" data-clickoutsidemouseuphandlerid="j36itg" data-clickoutsidemousedownhandlerid="y2p1cx"><span class="app-dash toggle" data-test="settings-toggle" data-ob="settings-toggle"><svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340.274 340.274"><path d="M293.629 127.806l-5.795-13.739c19.846-44.856 18.53-46.189 14.676-50.08l-25.353-24.77-2.516-2.12h-2.937c-1.549 0-6.173 0-44.712 17.48l-14.184-5.719c-18.332-45.444-20.212-45.444-25.58-45.444h-35.765c-5.362 0-7.446-.006-24.448 45.606l-14.123 5.734C86.848 43.757 71.574 38.19 67.452 38.19l-3.381.105-27.27 26.737c-4.138 3.891-5.582 5.263 15.402 49.425l-5.774 13.691C0 146.097 0 147.838 0 153.33v35.068c0 5.501 0 7.44 46.585 24.127l5.773 13.667c-19.843 44.832-18.51 46.178-14.655 50.032l25.353 24.8 2.522 2.168h2.951c1.525 0 6.092 0 44.685-17.516l14.159 5.758c18.335 45.438 20.218 45.427 25.598 45.427h35.771c5.47 0 7.41 0 24.463-45.589l14.195-5.74c26.014 11 41.253 16.585 45.349 16.585l3.404-.096 27.479-26.901c3.909-3.945 5.278-5.309-15.589-49.288l5.734-13.702c46.496-17.967 46.496-19.853 46.496-25.221V151.88c-.005-5.519-.005-7.446-46.644-24.074zM170.128 228.474c-32.798 0-59.504-26.187-59.504-58.364 0-32.153 26.707-58.315 59.504-58.315 32.78 0 59.43 26.168 59.43 58.315-.006 32.177-26.656 58.364-59.43 58.364z" fill="#FFF"></path></svg></span></div><div data-v-47ba3f80="" class="app-container photo-info"><div data-v-47ba3f80="" class="app-dash"><div data-v-47ba3f80="" class="title">Campagna, Italy</div> <div data-v-47ba3f80="" class="source"><span data-v-47ba3f80="" data-url="https://www.flickr.com/photos/100851286@N08/28616172163/" class="source-link">Giuseppe Cocchieri</span> <span data-v-47ba3f80=""><span data-v-47ba3f80="" title="Favorite" class="favorite control"><svg data-v-47ba3f80="" fill="#fff" viewBox="0 0 1000 1000" y="0px" x="0px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="icon icon-heart">
+<path xmlns="http://www.w3.org/2000/svg" class="outline" d="M42.9,332.9c4.5-73.8,29.8-135.1,76-183.8h1.9l1.9-1.9C179.2,98.4,243.1,74,314.3,74s132.5,22.5,183.8,67.4  c20.5-18,42-32.4,64.5-43.3l1.9-1.9h1.9C602.4,81.4,639.9,74,679.1,74c56.5-1.3,108.1,12.5,155,41.4  c46.8,28.9,82.1,68.7,105.9,119.3v1.9l1.9,3.8c19.2,68,22.5,132.8,9.6,194.4c-12.8,61.6-38.5,117.7-77,168.4  c-39.8,56.5-91.8,111.6-155.9,165.5c0,1.3-0.6,1.9-1.9,1.9c-31.4,28.9-65.8,57.7-103,86.6c-21.8,16-40.7,29.2-56.8,39.5  c-21.2,14.8-38.8,22.1-52.9,22.1l-5.8,1.9l-4.8-1.9c-18-1.9-36.9-11.2-56.8-27.9c-6.4-3.8-13.2-9-20.2-15.4s-12.2-10.6-15.4-12.5  H399C241.2,742.6,135.9,633.5,83.3,536v-1.9C51.9,473.8,38.4,406.7,42.9,332.9z M124.7,342.6c-3.8,55.2,6.7,107.2,31.8,155.9  c47.5,86.6,144.7,186.1,291.6,298.4h1.9c3.8,3.8,9.6,9,17.3,15.4c7.7,6.4,13.8,10.9,18.3,13.5c5.1,3.8,9.9,7.1,14.4,9.6  c5.1-1.3,9.6-3.2,13.5-5.8c14.1-9,30.5-20.9,49.1-35.6c37.2-27.6,70.9-55.8,101.1-84.7c60.3-51.3,108.8-103,145.3-155  c68.7-91.1,87.3-186.7,55.8-286.8c-17.3-36.6-42.3-64.8-75.1-84.7c-32.7-19.9-69-29.2-108.8-27.9c-27.6,0-55.2,5.5-82.8,16.4  c-25,14.1-46.8,32.4-65.4,54.9L502,267.5l-33.7-41.4c-33.4-41.7-78.6-65.1-135.7-70.3s-108.8,11.9-155,51  C146.2,242.2,128.5,287.4,124.7,342.6z"></path>
+<path xmlns="http://www.w3.org/2000/svg" class="fill" d="M41.7,332.9c4.5-73.8,29.9-135.1,76-183.8h1.9l1.9-1.9C178.1,98.4,241.9,74,313.1,74  c71.2,0,132.5,22.5,183.8,67.4c19.4-17.3,41.1-31.8,64.5-43.3l1.9-1.9h1.9C601,81.5,639.3,74,677.9,74c56.5-1.3,108.1,12.5,155,41.4  c46.9,28.9,82.2,68.7,105.9,119.3v1.9l1.9,3.8c19.2,68,22.5,132.8,9.6,194.4c-12.8,61.6-38.5,117.7-77,168.4  c-39.7,56.5-91.7,111.7-155.9,165.5c0.1,1-0.6,1.8-1.5,1.9c-0.1,0-0.3,0-0.4,0c-31.5,28.9-65.8,57.7-103,86.6  c-21.8,16.1-40.7,29.2-56.8,39.5c-21.2,14.7-38.8,22.1-52.9,22.1l-5.8,1.9l-4.8-1.9c-18-1.9-36.9-11.3-56.8-27.9  c-7.2-4.4-14-9.6-20.2-15.4c-7-6.4-12.2-10.6-15.4-12.5h-1.9C240,742.7,134.7,633.6,82.1,536v-1.9C50.7,473.7,37.2,406.7,41.7,332.9  z"></path>
+</svg> <!----></span><span data-v-47ba3f80="" title="Skip" class="skip control"><svg data-v-47ba3f80="" viewBox="0 0 249.05 132.12" class="icon icon-skip" xmlns="http://www.w3.org/2000/svg">
+	<circle xmlns="http://www.w3.org/2000/svg" cx="115.5" cy="108.62" r="23"></circle>
+	<path xmlns="http://www.w3.org/2000/svg" d="M291.5,281A22.5,22.5,0,1,1,269,303.5,22.52,22.52,0,0,1,291.5,281m0-1A23.5,23.5,0,1,0,315,303.5,23.5,23.5,0,0,0,291.5,280Z" transform="translate(-176 -194.88)"></path>
+	<path xmlns="http://www.w3.org/2000/svg" class="arrow" d="M399,257.5a135.18,135.18,0,0,0-41.16-42.17c-22.7-14.74-49.38-21.92-75.15-20.2a108.71,108.71,0,0,0-65.16,27c-19.91,17.5-33.76,41.79-41.18,72.19a13.52,13.52,0,0,0,9.92,16.32,13.66,13.66,0,0,0,3.21.38,13.51,13.51,0,0,0,13.11-10.3c6.07-24.92,17.1-44.54,32.76-58.31a82,82,0,0,1,49.13-20.32c20-1.33,40.81,4.32,58.65,15.9A108.07,108.07,0,0,1,374,268.51l-30,13.2,72.43,40.36,8.6-76Z" transform="translate(-176 -194.88)"></path>
+</svg> <!----></span></span></div></div> <!----></div></div></div> <div data-v-0b972818="" class="three-col-layout--center"><div data-test="region-bottom-center" class="bottom-center"><div data-v-0b56f9fa="" data-test="quote" data-show-anyway="quote" class="app-container quote"><div data-v-0b56f9fa="" data-test="app-dash" class="app-dash" data-resize-sensor-id="mlwv55"><p data-v-0b56f9fa="" class="body"><span data-v-0b56f9fa="" data-test="body-text" class="body-text">“Great people are not born great; they grow great.”</span></p> <div data-v-0b56f9fa="" class="below"><div data-v-0b56f9fa="" data-test="below" class="below-actions u--touch-hide"><span data-v-0b56f9fa="" data-test="source" class="source">Mario Puzo</span> <div data-v-0b56f9fa="" title="Favorite" data-test="favorite" class="control favorite"><svg data-v-0b56f9fa="" fill="#fff" viewBox="0 0 1000 1000" y="0px" x="0px" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="icon icon-heart">
+<path xmlns="http://www.w3.org/2000/svg" class="outline" d="M42.9,332.9c4.5-73.8,29.8-135.1,76-183.8h1.9l1.9-1.9C179.2,98.4,243.1,74,314.3,74s132.5,22.5,183.8,67.4  c20.5-18,42-32.4,64.5-43.3l1.9-1.9h1.9C602.4,81.4,639.9,74,679.1,74c56.5-1.3,108.1,12.5,155,41.4  c46.8,28.9,82.1,68.7,105.9,119.3v1.9l1.9,3.8c19.2,68,22.5,132.8,9.6,194.4c-12.8,61.6-38.5,117.7-77,168.4  c-39.8,56.5-91.8,111.6-155.9,165.5c0,1.3-0.6,1.9-1.9,1.9c-31.4,28.9-65.8,57.7-103,86.6c-21.8,16-40.7,29.2-56.8,39.5  c-21.2,14.8-38.8,22.1-52.9,22.1l-5.8,1.9l-4.8-1.9c-18-1.9-36.9-11.2-56.8-27.9c-6.4-3.8-13.2-9-20.2-15.4s-12.2-10.6-15.4-12.5  H399C241.2,742.6,135.9,633.5,83.3,536v-1.9C51.9,473.8,38.4,406.7,42.9,332.9z M124.7,342.6c-3.8,55.2,6.7,107.2,31.8,155.9  c47.5,86.6,144.7,186.1,291.6,298.4h1.9c3.8,3.8,9.6,9,17.3,15.4c7.7,6.4,13.8,10.9,18.3,13.5c5.1,3.8,9.9,7.1,14.4,9.6  c5.1-1.3,9.6-3.2,13.5-5.8c14.1-9,30.5-20.9,49.1-35.6c37.2-27.6,70.9-55.8,101.1-84.7c60.3-51.3,108.8-103,145.3-155  c68.7-91.1,87.3-186.7,55.8-286.8c-17.3-36.6-42.3-64.8-75.1-84.7c-32.7-19.9-69-29.2-108.8-27.9c-27.6,0-55.2,5.5-82.8,16.4  c-25,14.1-46.8,32.4-65.4,54.9L502,267.5l-33.7-41.4c-33.4-41.7-78.6-65.1-135.7-70.3s-108.8,11.9-155,51  C146.2,242.2,128.5,287.4,124.7,342.6z"></path>
+<path xmlns="http://www.w3.org/2000/svg" class="fill" d="M41.7,332.9c4.5-73.8,29.9-135.1,76-183.8h1.9l1.9-1.9C178.1,98.4,241.9,74,313.1,74  c71.2,0,132.5,22.5,183.8,67.4c19.4-17.3,41.1-31.8,64.5-43.3l1.9-1.9h1.9C601,81.5,639.3,74,677.9,74c56.5-1.3,108.1,12.5,155,41.4  c46.9,28.9,82.2,68.7,105.9,119.3v1.9l1.9,3.8c19.2,68,22.5,132.8,9.6,194.4c-12.8,61.6-38.5,117.7-77,168.4  c-39.7,56.5-91.7,111.7-155.9,165.5c0.1,1-0.6,1.8-1.5,1.9c-0.1,0-0.3,0-0.4,0c-31.5,28.9-65.8,57.7-103,86.6  c-21.8,16.1-40.7,29.2-56.8,39.5c-21.2,14.7-38.8,22.1-52.9,22.1l-5.8,1.9l-4.8-1.9c-18-1.9-36.9-11.3-56.8-27.9  c-7.2-4.4-14-9.6-20.2-15.4c-7-6.4-12.2-10.6-15.4-12.5h-1.9C240,742.7,134.7,633.6,82.1,536v-1.9C50.7,473.7,37.2,406.7,41.7,332.9  z"></path>
+</svg></div><div data-v-0b56f9fa="" title="Skip" data-test="skip" class="control skip"><svg data-v-0b56f9fa="" viewBox="0 0 249.05 132.12" class="icon icon-skip" xmlns="http://www.w3.org/2000/svg">
+	<circle xmlns="http://www.w3.org/2000/svg" cx="115.5" cy="108.62" r="23"></circle>
+	<path xmlns="http://www.w3.org/2000/svg" d="M291.5,281A22.5,22.5,0,1,1,269,303.5,22.52,22.52,0,0,1,291.5,281m0-1A23.5,23.5,0,1,0,315,303.5,23.5,23.5,0,0,0,291.5,280Z" transform="translate(-176 -194.88)"></path>
+	<path xmlns="http://www.w3.org/2000/svg" class="arrow" d="M399,257.5a135.18,135.18,0,0,0-41.16-42.17c-22.7-14.74-49.38-21.92-75.15-20.2a108.71,108.71,0,0,0-65.16,27c-19.91,17.5-33.76,41.79-41.18,72.19a13.52,13.52,0,0,0,9.92,16.32,13.66,13.66,0,0,0,3.21.38,13.51,13.51,0,0,0,13.11-10.3c6.07-24.92,17.1-44.54,32.76-58.31a82,82,0,0,1,49.13-20.32c20-1.33,40.81,4.32,58.65,15.9A108.07,108.07,0,0,1,374,268.51l-30,13.2,72.43,40.36,8.6-76Z" transform="translate(-176 -194.88)"></path>
+</svg></div><div data-v-0b56f9fa="" title="Share" data-test="share" class="control control-twitter"><svg data-v-0b56f9fa="" viewBox="0 0 512.004 419.042" xmlns="http://www.w3.org/2000/svg" class="icon icon-twitter"><path xmlns="http://www.w3.org/2000/svg" d="M191.012,466.043a439.3,439.3,0,0,1-67.856-5.387C82.777,454.32,41.9,433.2,30.336,426.875L0,410.289l32.844-10.8c35.9-11.8,57.742-19.129,84.777-30.6-27.07-13.11-47.933-36.692-57.976-67.176L52,278.52l6.266.957A113.977,113.977,0,0,1,44,261.883c-12.934-19.645-19.781-43.649-18.324-64.219l1.437-20.246,12.121,4.695a113.319,113.319,0,0,1-10.98-30.777c-5.293-26.359-.863-54.363,12.476-78.852L51.289,53.1,65.41,70.062c44.66,53.649,101.227,85.473,168.363,94.79-2.742-18.9-.687-37.145,6.114-53.5,7.918-19.039,22-35.183,40.722-46.691A122.322,122.322,0,0,1,351.6,47.23c26.511,1.629,50.582,11.563,69.7,28.747,9.336-2.426,16.215-5.016,25.512-8.516,5.593-2.106,11.937-4.5,19.875-7.231l29.25-10.078-19.075,54.477c1.258-.106,2.555-.2,3.911-.254L512,102.961l-18.461,25.23c-1.059,1.446-1.328,1.856-1.7,2.422-1.488,2.242-3.34,5.032-28.68,38.867-6.344,8.473-9.512,19.508-8.922,31.079,2.246,43.968-3.148,83.75-16.043,118.234C426,351.418,407.1,379.41,382.031,401.992c-31.023,27.938-70.582,47.067-117.582,56.848A361.961,361.961,0,0,1,191.012,466.043Z" transform="translate(0 -47.001)"></path></svg></div></div></div></div> <!----></div> <!----></div></div> <div data-v-0b972818="" class="three-col-layout--right" data-resize-sensor-id="uqgd5"><div data-v-3b81d88a="" data-v-0b972818="" class="region bottom-right"><div id="todo" class="app-container todo" data-test="todo" style=""><div class="app-wrapper app-placeholder nipple nipple-bottom-right">
+	<div class="app todo-app calculates-own-max-height" style="height:251px; width:320px">
+		<div class="app-placeholder-loading">
+			<i class="loading-icon"></i>Loading...
+		</div>
+	</div>
+	<div class="touch-overlay"></div>
+</div>
+<span class="app-dash toggle Todo-toggle" data-test="todo-app-dash" data-ob="todo-app-dash">Todo</span>
+</div></div></div></div> <!----></div>
+<div class="overlay message-overlay">
+<p class="drop">Drop to upload backgrounds <span class="badge badge-plus">PLUS</span></p>
+</div>
+</div>
+<div data-v-4e7d8916="" class="full-screen-portals"><div data-v-4e7d8916="" class="toast-menu-portal vue-portal-target" data-test="dropdown-portal"></div> <div data-v-51133c55="" data-v-4e7d8916="" class="dropdown-portal vue-portal-target" data-test="dropdown-portal"></div></div>
+<script src="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/globals.js"></script>
+<script src="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/js/lib.min.js"></script>
+<script src="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/es6.js"></script>
+<script src="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/app.min.js"></script>
+
+
+<script type="text/javascript" async="" src="chrome-extension://laookkfknpbbblfpciffpaejjkokdgca/app/7d9ace94-8620-4bc0-9160-fcc15d4cb578.js" id="7d9ace94-8620-4bc0-9160-fcc15d4cb578"></script></body></html>
