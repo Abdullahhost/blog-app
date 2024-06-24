@@ -27,11 +27,11 @@ const BlogList = ({ data }: any) => {
 				return (
 					<MotionDiv
 						variants={item}
-						key={ele.title} className={`item group z-10 p-2 md:p-3 w-full lg:w-[400px] xl:w-full 
+						key={ele.title} className={`item group z-10 p-2 md:p-3 w-full lg:w-[400px] xl:w-[100%] 
 							border dark:border-neutral-800
 							hover:brightness-110 transition  
 						 	hover:shadow-lg hover:rounded-lg
-							dark:hover:shadow-neutral-500 `}
+							dark:hover:shadow-neutral-500`}
 					>
 						<div className='overflow-hidden'>
 

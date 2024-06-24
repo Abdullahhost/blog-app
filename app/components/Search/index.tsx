@@ -15,7 +15,7 @@ const Search = () => {
         const params = new URLSearchParams(searchParams);
 
         if (term) {
-            params.set("query", term)
+            params.set("query", term.toLowerCase())
         } else {
             params.delete("query")
         }

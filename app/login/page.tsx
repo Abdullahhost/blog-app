@@ -58,14 +58,15 @@ const page = () => {
       if (userData.password === userData.confirm_password) {
         axios
           .post("/api/register", user)
-          .then((data) =>
-            data.status === 201
-              ? toast.success("User Create Successfully")
-              : toast.success("Chelck Again your credentials")
-          )
+          .then((data) => {
+            if (data.status === 201) {
+              toast.success("User Create Successfully. Now click Submit button again to login");
+              setVariant("LOGIN")
+            } else {
+              toast.success("Chelck Again your credentials")
+            }
+          })
           .catch((err) => toast.error(err.response.data));
-
-        console.log(user);
       } else {
         toast.error("Both Password not matched!");
       }
@@ -94,8 +95,6 @@ const page = () => {
   };
 
   const socialAction = (action: string) => {
-
-
     signIn(action, { redirect: false })
       .then((callback) => {
         if (callback?.error) {
@@ -105,7 +104,6 @@ const page = () => {
           toast.success("Logged In!");
         }
       })
-
   };
 
   return (

@@ -6,27 +6,27 @@ import Blog from "@/app/modals/Blog";
 import { NextResponse } from "next/server"
 
 export async function POST(req: Request) {
-
+    
     try {
-        await connectDB();
-        const { title, description, role, image, public_id } = await req.json();
+            await connectDB();
+            const { title, description, role, image, public_id } = await req.json();
 
-        const newBlog = new Blog({
-            title,
-            description,
-            role,
-            image,
-            public_id
-        });
+            const newBlog = new Blog({
+                title,
+                description,
+                role,
+                image,
+                public_id
+            });
 
-        await newBlog.save();
-        return NextResponse.json({
-            title,
-            description,
-            role,
-            image,
-            public_id
-        }, { status: 201 });
+            await newBlog.save();
+            return NextResponse.json({
+                title,
+                description,
+                role,
+                image,
+                public_id
+            }, { status: 201 });
     } catch (err: any) {
         console.log(err)
     }

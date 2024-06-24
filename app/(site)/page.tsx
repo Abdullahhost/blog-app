@@ -51,7 +51,7 @@ export default async function Home({ searchParams }: any) {
   const filteredData = allData?.data?.filter((item: any) => item?.title.toLowerCase().includes(searchParams?.query))
 
 
-  const container = { 
+  const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
       opacity: 1,
@@ -86,7 +86,8 @@ export default async function Home({ searchParams }: any) {
             variants={container}
             initial="hidden"
             animate="visible"
-            className="container px-3 md:px-6 py-3 grid  place-items-start mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 ">
+            style={{ placeSelf: "start" }}
+            className=" w-full xl:w-[65%] container px-3 md:px-4 py-3 grid mx-auto xl:mx-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2 lg:gap-6 ">
 
             {itemCount! > 0 ? (
               <>
@@ -155,9 +156,12 @@ export default async function Home({ searchParams }: any) {
                 </>
               ) : (
                 <>
-                  <Link arai-label="Next Page" className="hover:bg-[#2B2A6D] dark:border-neutral-600 shadow-md dark:shadow-neutral-500  hover:text-white hover:dark:bg-[#399B19] text-sm px-4 py-2 rounded-2xl border dark:bg-[#3D3D3D]  transition" href={`${!page ? `?page=${2}` : `?page=${nextPage}`}`}>
-                    Next
-                  </Link>
+                  {itemCount! > 4 && (
+
+                    <Link arai-label="Next Page" className="hover:bg-[#2B2A6D] dark:border-neutral-600 shadow-md dark:shadow-neutral-500  hover:text-white hover:dark:bg-[#399B19] text-sm px-4 py-2 rounded-2xl border dark:bg-[#3D3D3D]  transition" href={`${!page ? `?page=${2}` : `?page=${nextPage}`}`}>
+                      Next
+                    </Link>
+                  )}
                 </>
               )}
             </div>
