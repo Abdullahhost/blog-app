@@ -12,13 +12,17 @@ const Categories = async () => {
 
     const { data } = await getAllBlog();
 
-    const uniqueRoles = [...new Set(data?.map((item: BlogInterface) => item?.role))];
-
+    let uniqueValue: string[] = [];
+    data.forEach((element: BlogInterface) => {
+        if (!uniqueValue.includes(element?.role)) {
+            uniqueValue.push(element?.role)
+        }
+    });
     return (
         <div className="w-full lg:w-fit mr-6 flex flex-col items-center">
             <div className="w-full md:w-3/4 my-[20px] px-4  md:px-4  lg:max-w-[300px] md:min-w-[300px] md:mr-6 lg:mr-0">
                 <h4 className=" bg-transparent shadow-sm dark:shadow-[#846af8bd] md:shadow-md text-center md:text-start  p-1 md:p-2 mb-4 dark:text-white border-b-[#5555552f] dark:border-b-[#252525] border-b-2 ">Categories</h4>
-                {uniqueRoles?.map((ele: string) => {
+                {uniqueValue?.map((ele: string) => {
                     return <div key={ele} className="text-center md:text-start leading-8">
                         <li className="text-[#4e4e4e] hover:underline dark:text-[#d6d7d8]" style={{ listStyleType: "none" }}>
                             <div className="flex items-start gap-4 flex-row ">
